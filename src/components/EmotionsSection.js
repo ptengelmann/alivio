@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Square, ArrowRight } from 'lucide-react';
+import { Square } from 'lucide-react';
 
 export default function EmotionsSection({ emotions = [] }) {
   const [selectedEmotion, setSelectedEmotion] = useState(0);

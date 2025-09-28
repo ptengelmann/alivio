@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Plus, Grid3x3, Tag, Eye, Hash, Users } from 'lucide-react';
+import { X, Grid3x3, Tag, Hash } from 'lucide-react';
 
 export default function CollectionCreateModal({ isOpen, onClose, onSubmit }) {
   const [formData, setFormData] = useState({

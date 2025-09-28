@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, ArrowLeft, Terminal, Square, CheckCircle } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, Square, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 const DIAGNOSTIC_QUESTIONS = [
