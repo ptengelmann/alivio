@@ -1383,36 +1383,111 @@ export async function getStaticProps({ params }) {
   const [emotionId, volumeId] = params.slug; // destructure collection and volume
 
   try {
-    if (!client) {
-      // Return fallback data during build time when env vars aren't available
-      return {
-        props: {
-          collection: null,
-          emotionId,
-          volumeId: volumeId || null,
-          emotion: null
-        },
-        revalidate: 60
-      };
+    // For development, use Admin API directly
+    if (process.env.NODE_ENV === 'development' || !client) {
+      console.log(`Collection page: Using Admin API fallback for ${emotionId}`);
+
+      try {
+        const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+        const adminResponse = await fetch(`http://localhost:${port}/api/admin/collections`);
+
+        if (adminResponse.ok) {
+          const adminCollections = await adminResponse.json();
+          const collection = adminCollections.find(c => c.handle === emotionId);
+
+          if (!collection) {
+            return { notFound: true };
+          }
+
+          // Get products for this collection from Admin API
+          const productsResponse = await fetch(`http://localhost:${port}/api/admin/products`);
+          const allProducts = productsResponse.ok ? await productsResponse.json() : [];
+
+          // Filter products by collection tags
+          const collectionProducts = allProducts.filter(product =>
+            product.tags && product.tags.includes(emotionId)
+          );
+
+          // Convert admin format to storefront format
+          const storefrontCollection = {
+            id: collection.admin_graphql_api_id,
+            title: collection.title,
+            handle: collection.handle,
+            description: collection.body_html,
+            products: {
+              edges: collectionProducts.map(product => ({
+                node: {
+                  id: product.admin_graphql_api_id,
+                  title: product.title,
+                  handle: product.handle,
+                  description: product.body_html,
+                  featuredImage: product.images?.[0] ? {
+                    url: product.images[0].src,
+                    altText: product.images[0].alt
+                  } : null,
+                  priceRange: {
+                    minVariantPrice: {
+                      amount: product.variants?.[0]?.price || '0.00',
+                      currencyCode: 'GBP'
+                    }
+                  },
+                  variants: {
+                    edges: product.variants?.map(variant => ({
+                      node: {
+                        id: variant.admin_graphql_api_id,
+                        title: variant.title,
+                        availableForSale: variant.inventory_quantity > 0,
+                        price: {
+                          amount: variant.price,
+                          currencyCode: 'GBP'
+                        }
+                      }
+                    })) || []
+                  },
+                  tags: product.tags ? product.tags.split(', ') : []
+                }
+              }))
+            }
+          };
+
+          // If volumeId is provided, verify it exists
+          if (volumeId) {
+            const emotion = getEmotion(emotionId);
+            if (!emotion?.volumes?.[volumeId]) {
+              return { notFound: true };
+            }
+          }
+
+          return {
+            props: {
+              collection: storefrontCollection,
+              emotionId,
+              volumeId: volumeId || null
+            },
+            revalidate: 60
+          };
+        }
+      } catch (adminError) {
+        console.error('Admin API failed for collection:', adminError);
+      }
+
+      return { notFound: true };
     }
 
+    // Production: use Storefront API
     const { data } = await client.request(COLLECTION_QUERY, {
       variables: { handle: emotionId }
     });
 
     if (!data.collection) {
-      return {
-        notFound: true
-      };
+      return { notFound: true };
     }
 
     // If volumeId is provided, verify it exists
     if (volumeId) {
       const emotion = getEmotion(emotionId);
       if (!emotion?.volumes?.[volumeId]) {
-        return {
-          notFound: true
-        };
+        return { notFound: true };
       }
     }
 
@@ -1426,8 +1501,6 @@ export async function getStaticProps({ params }) {
     };
   } catch (error) {
     console.error('Error fetching collection:', error);
-    return {
-      notFound: true
-    };
+    return { notFound: true };
   }
 }

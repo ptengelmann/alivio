@@ -83,6 +83,7 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
       <Head>
         <title>Collections - Alívio Streetwear</title>
         <meta name="description" content="Explore Alívio's premium streetwear collections. Emotional compounds infused into limited-edition clothing drops." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Head>
 
       <Navbar />
@@ -117,8 +118,8 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
         {/* Main content */}
         <div className="max-w-7xl mx-auto px-4 overflow-hidden">
           {/* Header section */}
-          <div className="grid grid-cols-12 border-b border-zinc-900">
-            <div className="col-span-12 lg:col-span-8 p-4 md:p-6 lg:p-12 xl:p-16 lg:border-r border-zinc-900 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 border-b border-zinc-900">
+            <div className="lg:col-span-8 p-4 sm:p-6 lg:p-12 xl:p-16 border-b lg:border-b-0 lg:border-r border-zinc-900 overflow-hidden">
               <motion.div
                 className="flex items-center gap-2 text-xs mb-8 font-mono text-zinc-400"
                 initial={{ opacity: 0, y: 20 }}
@@ -130,7 +131,7 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
               </motion.div>
 
               <motion.h1
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-8 font-mono leading-[0.9] overflow-hidden break-words"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-8 font-mono leading-[0.9] overflow-hidden break-words"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: accessLevel >= 2 ? 1 : 0, y: accessLevel >= 2 ? 0 : 30 }}
                 transition={{ delay: 0.7 }}
@@ -165,7 +166,7 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
               </motion.button>
             </div>
 
-            <div className="col-span-12 lg:col-span-4 p-4 md:p-6 lg:p-12 xl:p-16 bg-zinc-950">
+            <div className="lg:col-span-4 p-4 sm:p-6 lg:p-12 xl:p-16 bg-zinc-950">
               <motion.div
                 className="space-y-6"
                 initial={{ opacity: 0, x: 20 }}
@@ -241,7 +242,7 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
                 </div>
 
                 {/* Collection data */}
-                <div className="p-8">
+                <div className="p-4 sm:p-6 lg:p-8">
                   {/* Header */}
                   <div className="mb-6">
                     <h3 className="text-3xl font-black font-mono text-white mb-2">
@@ -316,18 +317,18 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
 
           {/* Coming soon collections */}
           <div className="border-t border-zinc-900 bg-zinc-950">
-            <div className="p-8 lg:p-16">
-              <div className="grid grid-cols-12">
-                <div className="col-span-12 lg:col-span-6 border-r border-zinc-900 pr-8 lg:pr-16">
+            <div className="p-4 sm:p-6 lg:p-8 xl:p-16">
+              <div className="grid grid-cols-1 lg:grid-cols-12">
+                <div className="lg:col-span-6 border-b lg:border-b-0 lg:border-r border-zinc-900 pb-8 lg:pb-0 pr-0 lg:pr-8 xl:pr-16">
                   <div className="font-mono text-xs text-zinc-400 mb-6">COMING_SOON</div>
-                  <h2 className="text-4xl font-black font-mono text-white mb-6">
+                  <h2 className="text-3xl sm:text-4xl font-black font-mono text-white mb-6">
                     FUTURE<br />PROTOCOLS
                   </h2>
                   <div className="text-lg text-zinc-300 mb-8 leading-relaxed">
                     Additional collections under development. Synthesis in progress.
                   </div>
                 </div>
-                <div className="col-span-12 lg:col-span-6 pl-0 lg:pl-8">
+                <div className="lg:col-span-6 pt-8 lg:pt-0 pl-0 lg:pl-8">
                   <div className="space-y-4">
                     {[
                       { name: "MELANCHOLY", status: "SYNTHESIS_PHASE", date: "SPRING_2025" },
@@ -371,7 +372,9 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
 
 export async function getStaticProps() {
   try {
-    if (!client) {
+    // For development, use Admin API directly (same as homepage)
+    if (process.env.NODE_ENV === 'development' || !client) {
+      console.log('Collections page: Using Admin API fallback');
       return {
         props: {
           collections: [],
@@ -380,6 +383,7 @@ export async function getStaticProps() {
       };
     }
 
+    // For production, try Storefront API
     const { data } = await client.request(ALL_COLLECTIONS_QUERY);
 
     return {
