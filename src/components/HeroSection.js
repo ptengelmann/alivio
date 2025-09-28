@@ -46,15 +46,16 @@ export default function HeroSection({ openDiagnostic, emotionsWithStats = [], fe
 
       {/* Authentication header */}
       <motion.div
-        className="absolute top-8 left-8 right-8 z-20"
+        className="absolute top-4 left-4 right-4 lg:top-8 lg:left-8 lg:right-8 z-20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
         transition={{ delay: 0.3 }}
       >
         <div className="flex justify-between items-center font-mono text-xs">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 lg:gap-4">
             <Terminal className="w-3 h-3" />
-            <span className="text-white">ALÍVIO_DATABASE</span>
+            <span className="text-white hidden sm:inline">ALÍVIO_DATABASE</span>
+            <span className="text-white sm:hidden">ALÍVIO</span>
             <div className="flex gap-1">
               {[1, 2, 3].map((level) => (
                 <div
@@ -66,16 +67,16 @@ export default function HeroSection({ openDiagnostic, emotionsWithStats = [], fe
               ))}
             </div>
           </div>
-          <div className="text-zinc-600">{systemTime}</div>
+          <div className="text-zinc-600 hidden sm:block">{systemTime}</div>
         </div>
       </motion.div>
 
       {/* Main content grid */}
-      <div className="relative z-10 min-h-screen grid grid-cols-12 gap-0">
+      <div className="relative z-10 min-h-screen grid grid-cols-1 lg:grid-cols-12 gap-0">
 
         {/* Left column - Typography */}
-        <div className="col-span-12 lg:col-span-7 flex items-center p-8 lg:p-16">
-          <div className="max-w-4xl">
+        <div className="lg:col-span-7 flex items-center p-4 sm:p-6 lg:p-16 min-h-screen lg:min-h-0">
+          <div className="w-full max-w-4xl mx-auto lg:mx-0">
 
             {/* Authentication status */}
             <motion.div
@@ -95,7 +96,7 @@ export default function HeroSection({ openDiagnostic, emotionsWithStats = [], fe
 
             {/* Main title - Fashion brand focus */}
             <motion.div
-              className="mb-12"
+              className="mb-8 lg:mb-12"
               initial={{ opacity: 0, x: -60 }}
               animate={{
                 opacity: accessLevel >= 2 ? 1 : 0,
@@ -103,7 +104,7 @@ export default function HeroSection({ openDiagnostic, emotionsWithStats = [], fe
               }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <h1 className="text-[8rem] md:text-[12rem] lg:text-[16rem] font-black leading-[0.8] tracking-tighter mb-4">
+              <h1 className="text-[3rem] sm:text-[5rem] md:text-[7rem] lg:text-[10rem] xl:text-[14rem] font-black leading-[0.8] tracking-tighter mb-4 whitespace-nowrap overflow-hidden">
                 ALÍVIO
               </h1>
 
@@ -163,7 +164,7 @@ export default function HeroSection({ openDiagnostic, emotionsWithStats = [], fe
         </div>
 
         {/* Right column - Data interface */}
-        <div className="col-span-12 lg:col-span-5 border-l border-zinc-900 p-8 lg:p-16 flex items-center">
+        <div className="lg:col-span-5 border-t lg:border-t-0 lg:border-l border-zinc-900 p-4 sm:p-6 lg:p-16 flex items-center min-h-[50vh] lg:min-h-0">
           <motion.div
             className="w-full"
             initial={{ opacity: 0, x: 40 }}

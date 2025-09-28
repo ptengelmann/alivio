@@ -7,11 +7,11 @@ export default function EmotionsSection({ emotions = [] }) {
   const [selectedEmotion, setSelectedEmotion] = useState(0);
 
   return (
-    <section className="bg-black border-t border-zinc-900">
+    <section className="bg-black border-t border-zinc-900 overflow-hidden">
       <div className="max-w-full">
         {/* Section header - Brutalist grid layout */}
-        <div className="grid grid-cols-12 border-b border-zinc-900">
-          <div className="col-span-12 lg:col-span-8 p-8 lg:p-16 border-r border-zinc-900">
+        <div className="grid grid-cols-1 lg:grid-cols-12 border-b border-zinc-900">
+          <div className="lg:col-span-8 p-4 sm:p-6 lg:p-16 border-b lg:border-b-0 lg:border-r border-zinc-900">
             <motion.div
               className="flex items-center gap-2 text-xs mb-8 font-mono text-zinc-400"
               initial={{ opacity: 0, y: 20 }}
@@ -23,7 +23,7 @@ export default function EmotionsSection({ emotions = [] }) {
             </motion.div>
 
             <motion.h2
-              className="text-6xl md:text-8xl lg:text-9xl font-black text-white mb-8 font-mono leading-[0.9]"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black text-white mb-6 lg:mb-8 font-mono leading-[0.9] break-words"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -49,7 +49,7 @@ export default function EmotionsSection({ emotions = [] }) {
             </motion.div>
           </div>
 
-          <div className="col-span-12 lg:col-span-4 p-8 lg:p-16 bg-zinc-950">
+          <div className="lg:col-span-4 p-4 sm:p-6 lg:p-16 bg-zinc-950">
             <motion.div
               className="space-y-6"
               initial={{ opacity: 0, x: 20 }}

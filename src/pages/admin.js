@@ -183,7 +183,7 @@ export default function AdminDashboard() {
 
         {/* Admin header */}
         <motion.div
-          className="border-b border-zinc-900 p-8"
+          className="border-b border-zinc-900 p-4 sm:p-6 lg:p-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
           <div className="max-w-7xl mx-auto">
 
             {/* Dashboard header */}
-            <div className="p-8 border-b border-zinc-900">
+            <div className="p-4 sm:p-6 lg:p-8 border-b border-zinc-900">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -222,12 +222,12 @@ export default function AdminDashboard() {
                   <span>PRODUCT_MANAGEMENT_SYSTEM</span>
                 </div>
 
-                <h1 className="text-4xl md:text-6xl font-black text-white mb-6 font-mono leading-[0.9]">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 font-mono leading-[0.9] break-words">
                   ADMIN<br />DASHBOARD
                 </h1>
 
                 {/* Navigation tabs */}
-                <div className="flex gap-0 border border-zinc-800">
+                <div className="flex flex-col sm:flex-row gap-0 border border-zinc-800">
                   {[
                     { id: 'overview', label: 'OVERVIEW', icon: BarChart3 },
                     { id: 'products', label: 'PRODUCTS', icon: Package },
@@ -237,7 +237,7 @@ export default function AdminDashboard() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center gap-2 px-6 py-3 font-mono text-xs transition-colors border-r border-zinc-800 last:border-r-0 ${
+                      className={`flex items-center gap-2 px-4 sm:px-6 py-3 font-mono text-xs transition-colors border-r sm:border-r border-b sm:border-b-0 border-zinc-800 last:border-r-0 last:border-b-0 sm:last:border-b ${
                         activeTab === tab.id
                           ? 'bg-white text-black'
                           : 'bg-black text-zinc-400 hover:text-white hover:bg-zinc-950'
@@ -259,9 +259,9 @@ export default function AdminDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="p-8"
+                  className="p-4 sm:p-6 lg:p-8"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
                     {[
                       {
                         label: 'Total Products',
@@ -303,7 +303,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Quick actions */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <motion.div
                       className="border border-zinc-800 p-6 bg-black hover:bg-zinc-950 transition-colors cursor-pointer"
                       initial={{ opacity: 0, y: 20 }}
@@ -349,10 +349,10 @@ export default function AdminDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="p-8"
+                  className="p-4 sm:p-6 lg:p-8"
                 >
                   {/* Search and filters */}
-                  <div className="flex flex-col md:flex-row gap-4 mb-8">
+                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
                     <div className="flex-1">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
@@ -387,7 +387,7 @@ export default function AdminDashboard() {
                   </div>
 
                   {/* Products grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {filteredProducts.map((product, index) => (
                       <motion.div
                         key={product.id}
@@ -471,10 +471,10 @@ export default function AdminDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="p-8"
+                  className="p-4 sm:p-6 lg:p-8"
                 >
                   {/* Collections header */}
-                  <div className="flex justify-between items-center mb-8">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
                     <div>
                       <h2 className="font-mono text-xl text-white font-bold">EMOTION_COLLECTIONS</h2>
                       <div className="text-xs text-zinc-400 font-mono mt-1">Organize products by emotional state</div>
@@ -488,7 +488,7 @@ export default function AdminDashboard() {
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {collections.map((collection, index) => (
                       <motion.div
                         key={collection.id}
@@ -528,9 +528,9 @@ export default function AdminDashboard() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="p-8"
+                  className="p-4 sm:p-6 lg:p-8"
                 >
-                  <div className="text-center py-12">
+                  <div className="text-center py-8 sm:py-12">
                     <BarChart3 className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
                     <div className="font-mono text-zinc-400 mb-2">ANALYTICS_COMING_SOON</div>
                     <div className="text-xs text-zinc-600">

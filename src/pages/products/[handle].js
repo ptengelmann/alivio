@@ -505,21 +505,102 @@ export async function getStaticProps({ params }) {
   const { handle } = params;
 
   try {
-    if (!client) {
-      return {
-        props: {
-          product: null,
-          emotion: null
-        },
-        revalidate: 60
-      };
+    // For development, use Admin API directly
+    if (process.env.NODE_ENV === 'development' || !client) {
+      console.log('Fetching product from Admin API:', handle);
+
+      try {
+        const port = process.env.NODE_ENV === 'development' ? '3001' : '3000';
+        const adminResponse = await fetch(`http://localhost:${port}/api/admin/products`);
+        if (adminResponse.ok) {
+          const adminProducts = await adminResponse.json();
+          const product = adminProducts.find(p => p.handle === handle);
+
+          if (!product) {
+            return { notFound: true };
+          }
+
+          // Convert admin format to storefront format
+          const storefrontProduct = {
+            id: product.admin_graphql_api_id,
+            title: product.title,
+            handle: product.handle,
+            description: product.body_html,
+            vendor: product.vendor,
+            productType: product.product_type,
+            tags: product.tags ? product.tags.split(', ') : [],
+            featuredImage: product.images?.[0] ? {
+              url: product.images[0].src,
+              altText: product.images[0].alt
+            } : null,
+            images: {
+              edges: product.images?.map(img => ({
+                node: {
+                  url: img.src,
+                  altText: img.alt
+                }
+              })) || []
+            },
+            priceRange: {
+              minVariantPrice: {
+                amount: product.variants?.[0]?.price || '0.00',
+                currencyCode: 'GBP'
+              },
+              maxVariantPrice: {
+                amount: product.variants?.[0]?.price || '0.00',
+                currencyCode: 'GBP'
+              }
+            },
+            variants: {
+              edges: product.variants?.map(variant => ({
+                node: {
+                  id: variant.admin_graphql_api_id,
+                  title: variant.title,
+                  availableForSale: variant.inventory_quantity > 0,
+                  selectedOptions: variant.option1 ? [
+                    { name: 'Size', value: variant.option1 }
+                  ] : [],
+                  price: {
+                    amount: variant.price,
+                    currencyCode: 'GBP'
+                  },
+                  image: product.images?.[0] ? {
+                    url: product.images[0].src,
+                    altText: product.images[0].alt
+                  } : null
+                }
+              })) || []
+            },
+            options: product.options?.map(option => ({
+              id: option.id,
+              name: option.name,
+              values: option.values
+            })) || [],
+            collections: {
+              edges: [] // Will be populated based on tags if needed
+            }
+          };
+
+          return {
+            props: {
+              product: storefrontProduct
+            },
+            revalidate: 3600
+          };
+        }
+      } catch (adminError) {
+        console.error('Admin API failed for product:', adminError);
+      }
+
+      return { notFound: true };
     }
 
+    // Production: use Storefront API
     const { data } = await client.request(PRODUCT_QUERY, {
       variables: { handle }
     });
 
-    if (!data.product) {
+    if (!data?.product) {
       return {
         notFound: true
       };
