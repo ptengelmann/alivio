@@ -305,16 +305,46 @@ export async function getAllCollections() {
   try {
     console.log('Fetching all collections...');
     const { data } = await client.request(ALL_COLLECTIONS_QUERY);
-    const collections = data?.collections?.edges?.map(({ node }) => {
+
+    // Handle case where no collections exist yet
+    if (!data || !data.collections || !data.collections.edges || data.collections.edges.length === 0) {
+      console.log('No collections data returned from Storefront API - trying Admin API fallback');
+
+      // Fallback to Admin API for development
+      try {
+        const adminResponse = await fetch('http://localhost:3000/api/admin/collections');
+        if (adminResponse.ok) {
+          const adminCollections = await adminResponse.json();
+          console.log('Admin API fallback collections:', adminCollections.length);
+
+          // Convert admin format to storefront format
+          return adminCollections.map(col => ({
+            id: col.admin_graphql_api_id,
+            title: col.title,
+            handle: col.handle,
+            description: col.body_html,
+            products: { edges: [] }, // Empty for now
+            meta: {}
+          }));
+        }
+      } catch (adminError) {
+        console.error('Admin API fallback failed:', adminError);
+      }
+
+      return [];
+    }
+
+    const collections = data.collections.edges?.map(({ node }) => {
       // Attach metafields as meta object
       node.meta = metaToObject(node.metafields);
       return node;
     }) || [];
-    
+
     console.log('All collections with meta:', collections);
     return collections;
   } catch (error) {
     console.error('Error fetching collections:', error);
+    // Return empty array instead of throwing - this is normal for new stores
     return [];
   }
 }
@@ -406,79 +436,204 @@ export async function getEnhancedCollection(handle) {
 
 // Get featured products (for homepage) - Enhanced with real product data
 export async function getFeaturedProducts(limit = 6) {
-  const collections = await getAllCollections();
-  const featured = [];
+  try {
+    // First try to get products from collections via Storefront API
+    const collections = await getAllCollections();
+    let featured = [];
 
-  collections.forEach(collection => {
-    // Skip archived collections
-    if (collection.meta?.status === 'archived') return;
+    if (collections && collections.length > 0) {
+      collections.forEach(collection => {
+        // Skip archived collections
+        if (collection.meta?.status === 'archived') return;
 
-    const products = collection.products.edges.map(({ node }) => node);
-    // Add collection info to products for context
-    products.forEach(product => {
-      product.collection = {
-        handle: collection.handle,
-        title: collection.title,
-        id: collection.id
-      };
-      product.emotion = getEmotionByHandle(collection.handle);
+        const products = collection.products?.edges?.map(({ node }) => node) || [];
+        // Add collection info to products for context
+        products.forEach(product => {
+          product.collection = {
+            handle: collection.handle,
+            title: collection.title,
+            id: collection.id
+          };
+          product.emotion = getEmotionByHandle(collection.handle);
+          product.isFeatured = true;
+        });
+        featured.push(...products);
+      });
+    }
 
-      // Add featured product metadata
-      product.isFeatured = true;
+    // If no products found in collections, try Admin API fallback
+    if (featured.length === 0) {
+      console.log('No products in collections - trying Admin API fallback for featured products');
+      try {
+        const adminResponse = await fetch('http://localhost:3000/api/admin/products?limit=10');
+        if (adminResponse.ok) {
+          const adminProducts = await adminResponse.json();
+          console.log('Admin API products found:', adminProducts.length);
+
+          // Convert admin format to featured format
+          featured = adminProducts.slice(0, limit).map(product => ({
+            id: product.admin_graphql_api_id,
+            title: product.title,
+            handle: product.handle,
+            description: product.body_html,
+            featuredImage: product.images?.[0] ? {
+              url: product.images[0].src,
+              altText: product.images[0].alt
+            } : null,
+            variants: {
+              edges: product.variants?.map(variant => ({
+                node: {
+                  id: variant.admin_graphql_api_id,
+                  price: variant.price,
+                  availableForSale: variant.inventory_quantity > 0
+                }
+              })) || []
+            },
+            collection: null, // Will be populated if needed
+            emotion: null,
+            isFeatured: true,
+            createdAt: product.created_at
+          }));
+        }
+      } catch (adminError) {
+        console.error('Admin API fallback failed for featured products:', adminError);
+      }
+    }
+
+    // Prioritize products with images, then sort by newest
+    const sortedFeatured = featured.sort((a, b) => {
+      // Prioritize products with images
+      if (a.featuredImage?.url && !b.featuredImage?.url) return -1;
+      if (!a.featuredImage?.url && b.featuredImage?.url) return 1;
+
+      // Then sort by creation date (newest first)
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
     });
-    featured.push(...products);
-  });
 
-  // Prioritize products with images, then sort by newest
-  const sortedFeatured = featured.sort((a, b) => {
-    // Prioritize products with images
-    if (a.featuredImage?.url && !b.featuredImage?.url) return -1;
-    if (!a.featuredImage?.url && b.featuredImage?.url) return 1;
-
-    // Then sort by creation date (newest first)
-    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-  });
-
-  return sortedFeatured.slice(0, limit);
+    console.log('Featured products found:', sortedFeatured.length);
+    return sortedFeatured.slice(0, limit);
+  } catch (error) {
+    console.error('Error fetching featured products:', error);
+    return [];
+  }
 }
 
 // Get collections with product counts for EmotionsSection
 export async function getCollectionsWithStats() {
-  const collections = await getAllCollections();
-  const emotionsWithStats = [];
+  try {
+    const collections = await getAllCollections();
 
-  collections.forEach(collection => {
-    // Skip archived collections and only include main collections (not volumes)
-    if (collection.meta?.status === 'archived') return;
-    if (isVolumeCollection(collection.handle)) return;
-
-    const emotion = getEmotionByHandle(collection.handle);
-    if (emotion) {
-      const productCount = collection.products.edges.length;
-      const availableProducts = collection.products.edges.filter(edge =>
-        edge.node.availableForSale || edge.node.variants?.edges?.some(v => v.node.availableForSale)
-      ).length;
-
-      emotionsWithStats.push({
-        ...emotion,
-        collection,
-        productCount,
-        availableProducts,
-        totalUnits: Object.values(emotion.volumes || {}).reduce((sum, vol) => sum + (vol.units || 0), 0),
-        latestDrop: Object.values(emotion.volumes || {}).sort((a, b) =>
-          new Date(b.timestamp) - new Date(a.timestamp)
-        )[0],
-        shopifyData: {
-          id: collection.id,
-          handle: collection.handle,
-          title: collection.title,
-          description: collection.description
-        }
-      });
+    // Handle empty store gracefully
+    if (!collections || collections.length === 0) {
+      console.log('No collections found - returning empty emotions with stats');
+      return [];
     }
-  });
 
-  return emotionsWithStats;
+    // Get products to calculate proper counts
+    let allProducts = [];
+    try {
+      // Try to get products from Admin API fallback if collections don't have products
+      const adminResponse = await fetch('http://localhost:3000/api/admin/products');
+      if (adminResponse.ok) {
+        allProducts = await adminResponse.json();
+        console.log('Got products for collections stats:', allProducts.length);
+      }
+    } catch (error) {
+      console.log('Could not fetch products for stats:', error);
+    }
+
+    const emotionsWithStats = [];
+
+    collections.forEach(collection => {
+      // Skip archived collections and only include main collections (not volumes)
+      if (collection.meta?.status === 'archived') return;
+      if (isVolumeCollection(collection.handle)) return;
+
+      const emotion = getEmotionByHandle(collection.handle);
+      if (emotion) {
+        // Calculate product counts based on available data
+        let productCount = 0;
+        let availableProducts = 0;
+
+        // Check if collection has products from Storefront API
+        if (collection.products?.edges && collection.products.edges.length > 0) {
+          productCount = collection.products.edges.length;
+          availableProducts = collection.products.edges.filter(edge =>
+            edge.node.availableForSale || edge.node.variants?.edges?.some(v => v.node.availableForSale)
+          ).length;
+        }
+        // If no products in collection, try to match from all products by collection handle
+        else if (allProducts.length > 0) {
+          // Filter products that belong to this collection based on tags or collection handle
+          const collectionProducts = allProducts.filter(product => {
+            const tags = product.tags ? product.tags.toLowerCase() : '';
+            const collectionHandle = collection.handle.toLowerCase();
+            return tags.includes(collectionHandle) || tags.includes(collectionHandle + '-vol-');
+          });
+
+          productCount = collectionProducts.length;
+          availableProducts = collectionProducts.filter(product =>
+            product.status === 'active' &&
+            product.variants &&
+            product.variants.length > 0 &&
+            product.variants.some(variant => variant.inventory_quantity > 0)
+          ).length;
+
+          // Convert Admin API products to Storefront API format for EmotionsSection
+          collection.products = {
+            edges: collectionProducts.slice(0, 4).map(product => ({
+              node: {
+                id: product.admin_graphql_api_id,
+                title: product.title,
+                handle: product.handle,
+                featuredImage: product.images && product.images.length > 0 ? {
+                  url: product.images[0].src,
+                  altText: product.images[0].alt || product.title
+                } : null,
+                priceRange: product.variants && product.variants.length > 0 ? {
+                  minVariantPrice: {
+                    amount: product.variants[0].price,
+                    currencyCode: 'GBP'
+                  }
+                } : null,
+                availableForSale: product.status === 'active'
+              }
+            }))
+          };
+
+          console.log(`Collection ${collection.handle}: ${productCount} products, ${availableProducts} available`);
+        }
+
+        emotionsWithStats.push({
+          ...emotion,
+          collection,
+          productCount,
+          availableProducts,
+          totalUnits: Object.values(emotion.volumes || {}).reduce((sum, vol) => sum + (vol.units || 0), 0),
+          latestDrop: Object.values(emotion.volumes || {}).sort((a, b) =>
+            new Date(b.timestamp) - new Date(a.timestamp)
+          )[0],
+          shopifyData: {
+            id: collection.id,
+            handle: collection.handle,
+            title: collection.title,
+            description: collection.description
+          }
+        });
+      }
+    });
+
+    console.log('Collections with stats:', emotionsWithStats.map(e => ({
+      handle: e.collection.handle,
+      productCount: e.productCount,
+      availableProducts: e.availableProducts
+    })));
+
+    return emotionsWithStats;
+  } catch (error) {
+    console.error('Error fetching collections with stats:', error);
+    return [];
+  }
 }
 
 // Analytics helper for tracking

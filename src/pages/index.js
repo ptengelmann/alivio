@@ -62,6 +62,8 @@ export default function Homepage({ featuredProducts, organizedCollections, allEm
 // Static Site Generation
 export async function getStaticProps() {
   try {
+    console.log('Loading homepage with Shopify data...');
+
     const [featuredProducts, organizedCollections, emotionsWithStats] = await Promise.all([
       getFeaturedProducts(6),
       getOrganizedCollections(),
@@ -70,12 +72,18 @@ export async function getStaticProps() {
 
     const allEmotions = getAllEmotions();
 
+    console.log('Shopify data loaded:', {
+      featuredProducts: featuredProducts?.length || 0,
+      emotionsWithStats: emotionsWithStats?.length || 0,
+      organizedCollections: organizedCollections?.all?.length || 0
+    });
+
     return {
       props: {
         featuredProducts: featuredProducts || [],
         organizedCollections: organizedCollections || { main: [], volumes: {}, all: [] },
         allEmotions: allEmotions || [],
-        emotionsWithStats: emotionsWithStats || []
+        emotionsWithStats: emotionsWithStats?.length > 0 ? emotionsWithStats : allEmotions || []
       },
       revalidate: 3600 // Revalidate every hour
     };
@@ -90,7 +98,7 @@ export async function getStaticProps() {
         featuredProducts: [],
         organizedCollections: { main: [], volumes: {}, all: [] },
         allEmotions: allEmotions || [],
-        emotionsWithStats: []
+        emotionsWithStats: allEmotions || []
       },
       revalidate: 60 // Try again sooner if there was an error
     };

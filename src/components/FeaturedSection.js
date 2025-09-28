@@ -149,7 +149,13 @@ export default function FeaturedSection({ featuredProducts = [] }) {
                     <div className="flex justify-between py-1 border-b border-zinc-900">
                       <span className="text-xs font-mono text-zinc-500">PRICE</span>
                       <span className="text-xs font-mono text-white">
-                        {formatMoney(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)}
+                        {product.priceRange?.minVariantPrice?.amount
+                          ? formatMoney(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
+                          : product.variants?.edges?.[0]?.node?.price?.amount
+                            ? formatMoney(product.variants.edges[0].node.price.amount, product.variants.edges[0].node.price.currencyCode)
+                            : product.variants?.[0]?.price
+                              ? formatMoney(product.variants[0].price, 'GBP')
+                              : 'PRICE_TBA'}
                       </span>
                     </div>
                     <div className="flex justify-between py-1 border-b border-zinc-900">
