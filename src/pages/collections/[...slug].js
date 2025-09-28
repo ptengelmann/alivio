@@ -12,12 +12,12 @@ import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 import { getEmotion, getEmotionByHandle } from '../../lib/emotions';
 import { formatMoney } from '../../lib/money';
 
-// Create Shopify client
-const client = createStorefrontApiClient({
+// Create Shopify client with fallback for build time
+const client = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ? createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2024-10',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-});
+}) : null;
 
 // Collection with products query
 const COLLECTION_QUERY = `
@@ -1383,6 +1383,19 @@ export async function getStaticProps({ params }) {
   const [emotionId, volumeId] = params.slug; // destructure collection and volume
 
   try {
+    if (!client) {
+      // Return fallback data during build time when env vars aren't available
+      return {
+        props: {
+          collection: null,
+          emotionId,
+          volumeId: volumeId || null,
+          emotion: null
+        },
+        revalidate: 60
+      };
+    }
+
     const { data } = await client.request(COLLECTION_QUERY, {
       variables: { handle: emotionId }
     });

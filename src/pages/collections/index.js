@@ -10,12 +10,12 @@ import { Terminal, Square, ArrowRight, Eye, Lock } from 'lucide-react';
 import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 import { getAllEmotions } from '../../lib/emotions';
 
-// Create Shopify client
-const client = createStorefrontApiClient({
+// Create Shopify client with fallback for build time
+const client = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ? createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2024-10',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-});
+}) : null;
 
 // Collections query
 const ALL_COLLECTIONS_QUERY = `
@@ -371,6 +371,15 @@ export default function CollectionsIndex({ collections: shopifyCollections }) {
 
 export async function getStaticProps() {
   try {
+    if (!client) {
+      return {
+        props: {
+          collections: [],
+        },
+        revalidate: 60,
+      };
+    }
+
     const { data } = await client.request(ALL_COLLECTIONS_QUERY);
 
     return {
