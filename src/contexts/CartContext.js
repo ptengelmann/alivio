@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -106,6 +106,49 @@ export const CartProvider = ({ children }) => {
     return getSubtotal() + getShipping();
   };
 
+  // Shopify checkout functionality
+  const createCheckout = async () => {
+    try {
+      if (items.length === 0) {
+        throw new Error('Cart is empty');
+      }
+
+      const checkoutItems = items.map(item => ({
+        variantId: item.variant?.id || item.productId,
+        quantity: item.quantity
+      }));
+
+      const response = await fetch('/api/shopify/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: checkoutItems })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout');
+      }
+
+      return data.checkoutUrl;
+    } catch (error) {
+      console.error('Error creating checkout:', error);
+      throw error;
+    }
+  };
+
+  const proceedToCheckout = async () => {
+    try {
+      const checkoutUrl = await createCheckout();
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Error proceeding to checkout:', error);
+      alert('Failed to proceed to checkout. Please try again.');
+    }
+  };
+
   const value = {
     items,
     addItem,
@@ -115,7 +158,9 @@ export const CartProvider = ({ children }) => {
     getItemCount,
     getSubtotal,
     getShipping,
-    getTotal
+    getTotal,
+    createCheckout,
+    proceedToCheckout
   };
 
   return (

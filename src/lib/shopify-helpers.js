@@ -281,7 +281,7 @@ export function getCollectionHeroImage(collection) {
   return null;
 }
 
-// Enhanced collection fetching with defensive parsing
+// Enhanced collection fetching with defensive parsing and fast timeout
 export async function getCollection(handle) {
   try {
     if (!client) {
@@ -290,42 +290,42 @@ export async function getCollection(handle) {
     }
 
     console.log('Fetching collection:', handle);
-    const { data } = await client.request(COLLECTION_QUERY, { variables: { handle } });
+
+    // Add timeout to prevent long waits during development
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Storefront API timeout')), 5000)
+    );
+
+    const apiCall = client.request(COLLECTION_QUERY, { variables: { handle } });
+
+    const { data } = await Promise.race([apiCall, timeout]);
     const collection = data?.collection ?? null;
-    
+
     if (!collection) return null;
-    
+
     // Attach metafields as meta object
     collection.meta = metaToObject(collection.metafields);
-    
+
     console.log('Collection with meta:', collection);
     return collection;
   } catch (error) {
-    console.error('Error fetching collection:', handle, error);
+    console.error('Error fetching collection:', handle, error.message);
     return null;
   }
 }
 
 export async function getAllCollections() {
   try {
-    if (!client) {
-      console.log('Shopify client not available, returning empty collections array');
-      return [];
-    }
+    // For development, skip Storefront API and go straight to Admin API
+    if (process.env.NODE_ENV === 'development' || !client) {
+      console.log('Using Admin API directly for collections in development');
 
-    console.log('Fetching all collections...');
-    const { data } = await client.request(ALL_COLLECTIONS_QUERY);
-
-    // Handle case where no collections exist yet
-    if (!data || !data.collections || !data.collections.edges || data.collections.edges.length === 0) {
-      console.log('No collections data returned from Storefront API - trying Admin API fallback');
-
-      // Fallback to Admin API for development
       try {
-        const adminResponse = await fetch('http://localhost:3000/api/admin/collections');
+        const port = process.env.NODE_ENV === 'development' ? '3001' : '3000';
+        const adminResponse = await fetch(`http://localhost:${port}/api/admin/collections`);
         if (adminResponse.ok) {
           const adminCollections = await adminResponse.json();
-          console.log('Admin API fallback collections:', adminCollections.length);
+          console.log('Admin API collections:', adminCollections.length);
 
           // Convert admin format to storefront format
           return adminCollections.map(col => ({
@@ -338,23 +338,44 @@ export async function getAllCollections() {
           }));
         }
       } catch (adminError) {
-        console.error('Admin API fallback failed:', adminError);
+        console.error('Admin API failed:', adminError);
       }
 
       return [];
     }
 
-    const collections = data.collections.edges?.map(({ node }) => {
-      // Attach metafields as meta object
-      node.meta = metaToObject(node.metafields);
-      return node;
-    }) || [];
+    console.log('Fetching all collections from Storefront API...');
 
-    console.log('All collections with meta:', collections);
-    return collections;
+    // Add timeout to prevent long waits during development
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Storefront API timeout')), 3000)
+    );
+
+    const apiCall = client.request(ALL_COLLECTIONS_QUERY);
+
+    try {
+      const { data } = await Promise.race([apiCall, timeout]);
+
+      // Handle case where no collections exist yet
+      if (!data || !data.collections || !data.collections.edges || data.collections.edges.length === 0) {
+        console.log('No collections data returned from Storefront API');
+        return [];
+      }
+
+      const collections = data.collections.edges?.map(({ node }) => {
+        // Attach metafields as meta object
+        node.meta = metaToObject(node.metafields);
+        return node;
+      }) || [];
+
+      console.log('All collections with meta:', collections);
+      return collections;
+    } catch (storefrontError) {
+      console.error('Storefront API failed:', storefrontError.message);
+      return [];
+    }
   } catch (error) {
     console.error('Error fetching collections:', error);
-    // Return empty array instead of throwing - this is normal for new stores
     return [];
   }
 }
@@ -449,10 +470,61 @@ export async function getEnhancedCollection(handle) {
   };
 }
 
-// Get featured products (for homepage) - Enhanced with real product data
+// Get featured products (for homepage) - Enhanced with real product data and fast fallback
 export async function getFeaturedProducts(limit = 6) {
   try {
-    // First try to get products from collections via Storefront API
+    // Use Admin API directly for faster loading during development
+    console.log('Fetching featured products directly from Admin API for speed');
+    try {
+      const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+      const adminResponse = await fetch(`http://localhost:${port}/api/admin/products?limit=${limit * 2}`);
+      if (adminResponse.ok) {
+        const adminProducts = await adminResponse.json();
+        console.log('Admin API products found:', adminProducts.length);
+
+        // Convert admin format to featured format
+        const featured = adminProducts.slice(0, limit).map(product => ({
+          id: product.admin_graphql_api_id,
+          title: product.title,
+          handle: product.handle,
+          description: product.body_html,
+          featuredImage: product.images?.[0] ? {
+            url: product.images[0].src,
+            altText: product.images[0].alt
+          } : null,
+          priceRange: product.variants && product.variants.length > 0 ? {
+            minVariantPrice: {
+              amount: product.variants[0].price,
+              currencyCode: 'GBP'
+            }
+          } : null,
+          variants: {
+            edges: product.variants?.map(variant => ({
+              node: {
+                id: variant.admin_graphql_api_id,
+                price: {
+                  amount: variant.price,
+                  currencyCode: 'GBP'
+                },
+                availableForSale: variant.inventory_quantity > 0
+              }
+            })) || []
+          },
+          collection: null, // Will be populated if needed
+          emotion: null,
+          isFeatured: true,
+          createdAt: product.created_at,
+          availableForSale: product.status === 'active'
+        }));
+
+        console.log('Featured products found:', featured.length);
+        return featured;
+      }
+    } catch (adminError) {
+      console.error('Admin API failed for featured products:', adminError);
+    }
+
+    // Fallback to Storefront API if Admin API fails
     const collections = await getAllCollections();
     let featured = [];
 
@@ -474,45 +546,6 @@ export async function getFeaturedProducts(limit = 6) {
         });
         featured.push(...products);
       });
-    }
-
-    // If no products found in collections, try Admin API fallback
-    if (featured.length === 0) {
-      console.log('No products in collections - trying Admin API fallback for featured products');
-      try {
-        const adminResponse = await fetch('http://localhost:3000/api/admin/products?limit=10');
-        if (adminResponse.ok) {
-          const adminProducts = await adminResponse.json();
-          console.log('Admin API products found:', adminProducts.length);
-
-          // Convert admin format to featured format
-          featured = adminProducts.slice(0, limit).map(product => ({
-            id: product.admin_graphql_api_id,
-            title: product.title,
-            handle: product.handle,
-            description: product.body_html,
-            featuredImage: product.images?.[0] ? {
-              url: product.images[0].src,
-              altText: product.images[0].alt
-            } : null,
-            variants: {
-              edges: product.variants?.map(variant => ({
-                node: {
-                  id: variant.admin_graphql_api_id,
-                  price: variant.price,
-                  availableForSale: variant.inventory_quantity > 0
-                }
-              })) || []
-            },
-            collection: null, // Will be populated if needed
-            emotion: null,
-            isFeatured: true,
-            createdAt: product.created_at
-          }));
-        }
-      } catch (adminError) {
-        console.error('Admin API fallback failed for featured products:', adminError);
-      }
     }
 
     // Prioritize products with images, then sort by newest
@@ -548,7 +581,8 @@ export async function getCollectionsWithStats() {
     let allProducts = [];
     try {
       // Try to get products from Admin API fallback if collections don't have products
-      const adminResponse = await fetch('http://localhost:3000/api/admin/products');
+      const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+      const adminResponse = await fetch(`http://localhost:${port}/api/admin/products`);
       if (adminResponse.ok) {
         allProducts = await adminResponse.json();
         console.log('Got products for collections stats:', allProducts.length);
