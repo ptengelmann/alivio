@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 
-// Create Shopify client directly
-const client = createStorefrontApiClient({
+// Create Shopify client with fallback for build time
+const client = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ? createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2024-10',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-});
+}) : null;
 
 // Simple collection query
 const COLLECTIONS_QUERY = `
@@ -85,7 +85,13 @@ export default function DebugShopify() {
         console.log('Testing Shopify connection...');
         console.log('Store Domain:', process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
         console.log('Token exists:', !!process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN);
-        
+
+        if (!client) {
+          console.log('Client not initialized - missing environment variables');
+          setError('Shopify client not configured - missing environment variables');
+          return;
+        }
+
         // Test 1: Get all collections
         console.log('Fetching all collections...');
         const { data: allData } = await client.request(COLLECTIONS_QUERY);
