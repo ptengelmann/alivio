@@ -284,6 +284,11 @@ export function getCollectionHeroImage(collection) {
 // Enhanced collection fetching with defensive parsing
 export async function getCollection(handle) {
   try {
+    if (!client) {
+      console.log('Shopify client not available, returning null for collection:', handle);
+      return null;
+    }
+
     console.log('Fetching collection:', handle);
     const { data } = await client.request(COLLECTION_QUERY, { variables: { handle } });
     const collection = data?.collection ?? null;
@@ -303,6 +308,11 @@ export async function getCollection(handle) {
 
 export async function getAllCollections() {
   try {
+    if (!client) {
+      console.log('Shopify client not available, returning empty collections array');
+      return [];
+    }
+
     console.log('Fetching all collections...');
     const { data } = await client.request(ALL_COLLECTIONS_QUERY);
 
@@ -351,6 +361,11 @@ export async function getAllCollections() {
 
 export async function getProduct(handle) {
   try {
+    if (!client) {
+      console.log('Shopify client not available, returning null for product:', handle);
+      return null;
+    }
+
     console.log('Fetching product:', handle);
     const { data } = await client.request(PRODUCT_QUERY, { variables: { handle } });
     return data?.product || null;
