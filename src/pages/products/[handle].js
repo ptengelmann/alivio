@@ -510,7 +510,7 @@ export async function getStaticProps({ params }) {
       console.log('Fetching product from Admin API:', handle);
 
       try {
-        const port = process.env.NODE_ENV === 'development' ? '3001' : '3000';
+        const port = '3000';
         const adminResponse = await fetch(`http://localhost:${port}/api/admin/products`);
         if (adminResponse.ok) {
           const adminProducts = await adminResponse.json();

@@ -321,7 +321,7 @@ export async function getAllCollections() {
       console.log('Using Admin API directly for collections in development');
 
       try {
-        const port = process.env.NODE_ENV === 'development' ? '3001' : '3000';
+        const port = '3000';
         const adminResponse = await fetch(`http://localhost:${port}/api/admin/collections`);
         if (adminResponse.ok) {
           const adminCollections = await adminResponse.json();
@@ -476,7 +476,7 @@ export async function getFeaturedProducts(limit = 6) {
     // Use Admin API directly for faster loading during development
     console.log('Fetching featured products directly from Admin API for speed');
     try {
-      const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+      const port = '3000';
       const adminResponse = await fetch(`http://localhost:${port}/api/admin/products?limit=${limit * 2}`);
       if (adminResponse.ok) {
         const adminProducts = await adminResponse.json();
@@ -581,7 +581,7 @@ export async function getCollectionsWithStats() {
     let allProducts = [];
     try {
       // Try to get products from Admin API fallback if collections don't have products
-      const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+      const port = '3000';
       const adminResponse = await fetch(`http://localhost:${port}/api/admin/products`);
       if (adminResponse.ok) {
         allProducts = await adminResponse.json();

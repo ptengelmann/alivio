@@ -1388,7 +1388,7 @@ export async function getStaticProps({ params }) {
       console.log(`Collection page: Using Admin API fallback for ${emotionId}`);
 
       try {
-        const port = process.env.NODE_ENV === 'development' ? '3002' : '3000';
+        const port = '3000';
         const adminResponse = await fetch(`http://localhost:${port}/api/admin/collections`);
 
         if (adminResponse.ok) {
