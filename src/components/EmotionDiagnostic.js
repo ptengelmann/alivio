@@ -226,39 +226,37 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
+      style={{ backgroundColor: 'rgba(10, 10, 15, 0.98)' }}
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="w-full max-w-2xl bg-black border border-zinc-900 relative overflow-hidden"
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="w-full max-w-3xl bg-[#0a0a0f] border border-zinc-700/30 relative overflow-hidden"
         style={{ maxHeight: '90vh' }}
       >
         {/* Header */}
-        <div className="border-b border-zinc-900 p-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Square className="w-4 h-4 fill-current text-white" />
-            <div>
-              <h2 className="text-lg font-black font-mono text-white">
-                COLLECTION_MATCHER
-              </h2>
-              <p className="text-xs text-zinc-400 font-mono">
-                STREETWEAR_SELECTION_PROTOCOL
-              </p>
-            </div>
+        <div className="border-b border-zinc-700/30 px-8 lg:px-12 py-6 flex items-center justify-between">
+          <div>
+            <h2 className="text-sm font-light text-white tracking-[0.3em] uppercase mb-2">
+              Emotion_Diagnostic
+            </h2>
+            <p className="text-[9px] text-zinc-500 tracking-[0.2em] uppercase font-light">
+              Collection_Matching_System
+            </p>
           </div>
 
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-white transition-colors p-2 border border-zinc-800 hover:border-white"
+            className="text-zinc-500 hover:text-white transition-colors p-2 border border-zinc-700/30 hover:border-zinc-500"
             data-cursor="CLOSE"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 140px)' }}>
+        <div className="px-8 lg:px-12 py-8 overflow-y-auto" style={{ maxHeight: 'calc(90vh - 140px)' }}>
           <AnimatePresence mode="wait">
             {/* Loading State */}
             {isCalculating && (
@@ -267,18 +265,18 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="text-center py-12"
+                className="text-center py-16"
               >
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-16 h-16 border-2 border-white border-t-transparent mx-auto mb-6"
+                  className="w-12 h-12 border border-zinc-700/50 border-t-white mx-auto mb-8"
                 />
-                <h3 className="text-xl font-bold font-mono text-white mb-2">
-                  PROCESSING_SELECTION
+                <h3 className="text-xs font-light text-white mb-3 uppercase tracking-[0.3em]">
+                  Processing_Selection
                 </h3>
-                <p className="text-sm text-zinc-400 font-mono">
-                  ANALYZING_PREFERENCES_AND_EMOTIONAL_STATE
+                <p className="text-[10px] text-zinc-500 tracking-[0.2em] uppercase font-light">
+                  Analyzing_Emotional_State
                 </p>
               </motion.div>
             )}
@@ -290,98 +288,102 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="text-center"
+                className="max-w-xl mx-auto"
               >
-                <div className={`inline-flex items-center gap-2 px-4 py-2 ${result.colors.bg} ${result.colors.border} border mb-6`}>
-                  <CheckCircle className={`w-4 h-4 ${result.colors.text}`} />
-                  <span className={`font-mono text-sm ${result.colors.text}`}>
-                    COLLECTION MATCHED
-                  </span>
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center gap-2 px-6 py-2 border border-zinc-700/30 mb-8">
+                    <CheckCircle className="w-3 h-3 text-white" />
+                    <span className="text-[9px] text-zinc-400 tracking-[0.3em] uppercase font-light">
+                      Collection_Matched
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl lg:text-4xl font-light text-white mb-6 tracking-tight">
+                    {result.name}
+                  </h3>
+
+                  <p className="text-sm text-zinc-400 leading-relaxed font-light tracking-wide">
+                    {result.description}
+                  </p>
                 </div>
 
-                <h3 className={`text-3xl font-black font-mono mb-4 ${result.colors.text}`}>
-                  {result.name.toUpperCase()}
-                </h3>
-                
-                <p className="text-white/80 mb-8 leading-relaxed">
-                  {result.description}
-                </p>
-
                 {result.available ? (
-                  <div className="space-y-4">
-                    <p className="text-sm font-mono text-white">
-                      COLLECTION_STATUS: AVAILABLE
-                    </p>
-                    <div className="grid gap-3">
+                  <div className="space-y-6">
+                    <div className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase text-center">
+                      Available_Now
+                    </div>
+                    <div className="space-y-3">
                       {result.products?.map((product, index) => (
-                        <div key={index} className="p-3 border border-zinc-800 bg-zinc-950 text-left">
-                          <div className="flex justify-between items-center">
-                            <div className="text-sm font-mono text-white">
+                        <div key={index} className="border border-zinc-700/30 p-6">
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="text-xs text-white font-light tracking-wide uppercase">
                               {product.name}
                             </div>
-                            <div className="flex gap-4 text-xs font-mono text-zinc-400">
-                              <span>{product.price}</span>
-                              <span>{product.size}</span>
+                            <div className="text-xs text-white font-light">
+                              {product.price}
                             </div>
+                          </div>
+                          <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                            {product.size}
                           </div>
                         </div>
                       ))}
                     </div>
-                    <div className="flex gap-3 pt-4">
+                    <div className="flex gap-4 pt-4">
                       <Link
                         href={`/collections/${result.shopifyHandle || result.id}`}
-                        className={`flex-1 py-3 px-6 ${result.colors.bg} ${result.colors.border} border ${result.colors.text} hover:bg-white hover:text-black transition-all font-mono font-bold text-center`}
+                        className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                         onClick={onClose}
                         data-cursor="SHOP"
                       >
-                        SHOP_{result.name.toUpperCase()}
+                        Shop_{result.name}
                       </Link>
                       <button
                         onClick={restartQuiz}
-                        className="px-6 py-3 border border-zinc-800 text-white hover:border-white transition-colors font-mono"
+                        className="px-6 py-4 border border-zinc-700/30 text-zinc-400 hover:border-zinc-500 hover:text-white transition-all text-[10px] uppercase tracking-[0.2em] font-light"
                         data-cursor="RESTART"
                       >
-                        RETAKE_QUIZ
+                        Retake
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    <div className={`p-4 ${result.colors.bg} ${result.colors.border} border`}>
-                      <p className={`text-sm font-mono ${result.colors.text} mb-2`}>
-                        COLLECTION_STATUS: IN_DEVELOPMENT
+                  <div className="space-y-6">
+                    <div className="border border-zinc-700/30 p-6 text-center">
+                      <p className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase mb-3">
+                        Collection_Status: In_Development
                       </p>
-                      <p className="text-white/80 text-sm">
+                      <p className="text-xs text-zinc-400 font-light tracking-wide">
                         {result.name} collection launches {result.launchDate}
                       </p>
                     </div>
-                    
-                    <div className="flex gap-3 pt-4">
+
+                    <div className="flex gap-4">
                       {result.preorderAvailable ? (
                         <Link
                           href={`/collections/${result.id}`}
-                          className={`flex-1 py-3 px-6 ${result.colors.bg} ${result.colors.border} border ${result.colors.text} hover:opacity-80 transition-all font-mono font-bold text-center`}
+                          className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                           onClick={onClose}
                           data-cursor="PREORDER"
                         >
-                          PREORDER_NOW
+                          Preorder_Now
                         </Link>
                       ) : (
                         <Link
                           href="/collections/euphoria"
-                          className="flex-1 py-3 px-6 bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/30 transition-all font-mono font-bold text-center"
+                          className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                           onClick={onClose}
                           data-cursor="SHOP"
                         >
-                          SHOP_AVAILABLE
+                          Shop_Available
                         </Link>
                       )}
                       <button
                         onClick={restartQuiz}
-                        className="px-6 py-3 border border-zinc-800 text-white hover:border-white transition-colors font-mono"
+                        className="px-6 py-4 border border-zinc-700/30 text-zinc-400 hover:border-zinc-500 hover:text-white transition-all text-[10px] uppercase tracking-[0.2em] font-light"
                         data-cursor="RESTART"
                       >
-                        RETAKE_QUIZ
+                        Retake
                       </button>
                     </div>
                   </div>
@@ -396,14 +398,15 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
+                className="max-w-2xl mx-auto"
               >
                 {/* Progress */}
-                <div className="mb-8">
-                  <div className="flex items-center justify-between text-xs font-mono text-zinc-400 mb-2">
-                    <span>QUESTION_{(currentQuestion + 1).toString().padStart(2, '0')}</span>
-                    <span>{Math.round(((currentQuestion + 1) / DIAGNOSTIC_QUESTIONS.length) * 100)}%_COMPLETE</span>
+                <div className="mb-12">
+                  <div className="flex items-center justify-between text-[9px] text-zinc-500 tracking-[0.3em] uppercase mb-4">
+                    <span>Question_{(currentQuestion + 1).toString().padStart(2, '0')}</span>
+                    <span>{Math.round(((currentQuestion + 1) / DIAGNOSTIC_QUESTIONS.length) * 100)}%_Complete</span>
                   </div>
-                  <div className="w-full bg-zinc-800 h-1">
+                  <div className="w-full bg-zinc-900/50 h-px">
                     <motion.div
                       className="h-full bg-white"
                       initial={{ width: 0 }}
@@ -414,7 +417,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 </div>
 
                 {/* Question */}
-                <h3 className="text-xl font-bold text-white mb-8 leading-relaxed">
+                <h3 className="text-xl lg:text-2xl font-light text-white mb-12 leading-relaxed tracking-tight">
                   {DIAGNOSTIC_QUESTIONS[currentQuestion]?.question}
                 </h3>
 
@@ -425,24 +428,24 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       key={option.value}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                       onClick={() => handleAnswer(DIAGNOSTIC_QUESTIONS[currentQuestion].id, option.value)}
-                      className="w-full text-left p-4 border border-zinc-800 hover:border-white hover:bg-zinc-950 transition-all group"
+                      className="w-full text-left p-5 border border-zinc-700/30 hover:border-zinc-500 transition-all group"
                       data-cursor="SELECT"
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           {option.color && (
-                            <div 
-                              className="w-4 h-4 rounded-full" 
+                            <div
+                              className="w-3 h-3 rounded-full flex-shrink-0"
                               style={{ backgroundColor: option.color }}
                             />
                           )}
-                          <span className="text-white group-hover:text-white transition-colors font-mono">
+                          <span className="text-sm text-zinc-400 group-hover:text-white transition-colors font-light tracking-wide">
                             {option.label}
                           </span>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors" />
+                        <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors flex-shrink-0" />
                       </div>
                     </motion.button>
                   ))}
@@ -452,11 +455,11 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 {currentQuestion > 0 && (
                   <button
                     onClick={goBack}
-                    className="mt-6 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors font-mono border border-zinc-800 hover:border-white py-2 px-4"
+                    className="mt-8 flex items-center gap-2 text-zinc-500 hover:text-white transition-colors border border-zinc-700/30 hover:border-zinc-500 py-3 px-5 text-[10px] uppercase tracking-[0.2em] font-light"
                     data-cursor="BACK"
                   >
-                    <ArrowLeft className="w-4 h-4" />
-                    PREVIOUS_QUESTION
+                    <ArrowLeft className="w-3 h-3" />
+                    Previous
                   </button>
                 )}
               </motion.div>

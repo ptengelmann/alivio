@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Menu, X, Terminal, Square, User, LogOut } from 'lucide-react';
+import { ShoppingBag, Menu, X, Terminal, User, LogOut } from 'lucide-react';
 import { getAllEmotions } from '../lib/emotions';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
@@ -22,7 +22,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -41,174 +41,217 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-black/95 backdrop-blur-sm border-b border-zinc-800' : 'bg-black'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+          isScrolled
+            ? 'bg-[#0a0a0f]/95 backdrop-blur-md border-b border-zinc-900/50'
+            : 'bg-transparent border-b border-transparent'
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
       >
-        <div className="grid grid-cols-12 border-b border-zinc-900">
-          {/* Left section - Logo and system info */}
-          <div className="col-span-6 lg:col-span-4 flex items-center p-4 border-r border-zinc-900">
-            <Link href="/" className="flex items-center gap-3" data-cursor="HOME">
-              <Square className="w-4 h-4 fill-current text-white" />
-              <div>
-                <div className="font-black text-lg font-mono text-white">ALÍVIO</div>
-                <div className="text-xs font-mono text-zinc-500">STREETWEAR_BRAND</div>
+        <div className="max-w-[1600px] mx-auto">
+          <div className={`flex items-center justify-between h-20 px-8 lg:px-12 transition-all duration-700 ${
+            !isScrolled ? 'drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]' : ''
+          }`}>
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group" data-cursor="HOME">
+              {/* White Square Logo */}
+              <div className="w-8 h-8 bg-white group-hover:opacity-80 transition-opacity duration-300" />
+
+              {/* Logo Text */}
+              <div className="flex flex-col">
+                <div className="font-black text-sm font-mono text-white leading-none mb-0.5 tracking-tight">
+                  ALIVIO
+                </div>
+                <div className={`text-[9px] font-mono transition-colors duration-300 leading-none tracking-[0.2em] uppercase ${
+                  isScrolled ? 'text-zinc-600' : 'text-white/50'
+                }`}>
+                  Emotional_Contraband
+                </div>
               </div>
             </Link>
-          </div>
 
-          {/* Center section - Main navigation */}
-          <div className="hidden lg:flex lg:col-span-6 items-center border-r border-zinc-900">
-            <div className="flex w-full">
+            {/* Center Navigation - Desktop */}
+            <div className="hidden lg:flex items-center gap-12">
               {[
-                { href: '/collections', label: 'COLLECTIONS', cursor: 'BROWSE' },
-                { href: '/about', label: 'BRAND', cursor: 'INFO' },
-                { href: '/contact', label: 'CONTACT', cursor: 'CONTACT' },
-                { href: isAuthenticated ? '/account' : '/login', label: 'ACCOUNT', cursor: isAuthenticated ? 'ACCOUNT' : 'LOGIN' }
-              ].map((item, index) => (
+                { href: '/collections', label: 'Collections' },
+                { href: '/blog', label: 'Journal' },
+                { href: '/about', label: 'Brand' },
+                { href: '/contact', label: 'Contact' }
+              ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex-1 py-4 px-6 font-mono text-xs text-center border-r border-zinc-900 last:border-r-0 transition-colors ${
+                  className={`font-mono text-[10px] uppercase tracking-[0.2em] font-light transition-all duration-300 relative group ${
                     isActivePage(item.href)
-                      ? 'text-white bg-zinc-950'
-                      : 'text-zinc-400 hover:text-white hover:bg-zinc-950'
+                      ? 'text-white'
+                      : isScrolled
+                        ? 'text-zinc-500 hover:text-white'
+                        : 'text-white/70 hover:text-white'
                   }`}
-                  data-cursor={item.cursor}
+                  data-cursor={`VIEW_${item.label.toUpperCase()}`}
                 >
                   {item.label}
+                  {/* Active indicator */}
+                  {isActivePage(item.href) && (
+                    <motion.div
+                      layoutId="activeNav"
+                      className="absolute -bottom-1 left-0 right-0 h-[1px] bg-white/40"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </Link>
               ))}
             </div>
-          </div>
 
-          {/* Right section - Actions */}
-          <div className="col-span-6 lg:col-span-2 flex items-center justify-end p-4">
-            <div className="flex items-center gap-4">
-              {/* Account / Logout */}
+            {/* Right Actions */}
+            <div className="flex items-center gap-2.5">
+              {/* Account */}
               {isAuthenticated ? (
-                <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2">
                   <Link
                     href="/account"
-                    className="p-2 border border-zinc-800 hover:border-white transition-colors"
+                    className={`w-9 h-9 flex items-center justify-center border transition-all duration-300 ${
+                      isScrolled
+                        ? 'border-zinc-700/30 hover:border-zinc-500'
+                        : 'border-white/10 hover:border-white/30'
+                    }`}
                     data-cursor="ACCOUNT"
                   >
-                    <User className="w-4 h-4 text-white" />
+                    <User className="w-3.5 h-3.5 text-white" />
                   </Link>
                   <button
                     onClick={logout}
-                    className="p-2 border border-zinc-800 hover:border-red-500 hover:text-red-500 transition-colors"
+                    className={`w-9 h-9 flex items-center justify-center border transition-all duration-300 ${
+                      isScrolled
+                        ? 'border-zinc-700/30 hover:border-red-500/50'
+                        : 'border-white/10 hover:border-red-500/50'
+                    }`}
                     data-cursor="LOGOUT"
                   >
-                    <LogOut className="w-4 h-4 text-white" />
+                    <LogOut className="w-3.5 h-3.5 text-white hover:text-red-400 transition-colors" />
                   </button>
                 </div>
               ) : (
                 <Link
                   href="/login"
-                  className="p-2 border border-zinc-800 hover:border-white transition-colors"
+                  className={`hidden sm:flex w-9 h-9 items-center justify-center border transition-all duration-300 ${
+                    isScrolled
+                      ? 'border-zinc-700/30 hover:border-zinc-500'
+                      : 'border-white/10 hover:border-white/30'
+                  }`}
                   data-cursor="LOGIN"
                 >
-                  <User className="w-4 h-4 text-white" />
+                  <User className="w-3.5 h-3.5 text-white" />
                 </Link>
               )}
 
               {/* Diagnostic */}
               <button
                 onClick={() => openDiagnostic('nav')}
-                className="p-2 border border-zinc-800 hover:border-white transition-colors"
+                className={`hidden sm:flex w-9 h-9 items-center justify-center border transition-all duration-300 ${
+                  isScrolled
+                    ? 'border-zinc-700/30 hover:border-zinc-500'
+                    : 'border-white/10 hover:border-white/30'
+                }`}
                 data-cursor="SCAN"
               >
-                <Terminal className="w-4 h-4 text-white" />
+                <Terminal className="w-3.5 h-3.5 text-white" />
               </button>
 
               {/* Cart */}
               <Link
                 href="/cart"
-                className="relative p-2 border border-zinc-800 hover:border-white transition-colors"
+                className={`relative w-9 h-9 flex items-center justify-center border transition-all duration-300 ${
+                  isScrolled
+                    ? 'border-zinc-700/30 hover:border-zinc-500'
+                    : 'border-white/10 hover:border-white/30'
+                }`}
                 data-cursor="CART"
               >
-                <ShoppingBag className="w-4 h-4 text-white" />
+                <ShoppingBag className="w-3.5 h-3.5 text-white" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-black text-xs font-mono font-bold flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-white text-black text-[9px] font-mono font-bold flex items-center justify-center">
                     {cartCount}
                   </span>
                 )}
               </Link>
 
-              {/* Mobile menu */}
+              {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2 border border-zinc-800 hover:border-white transition-colors"
+                className={`lg:hidden w-9 h-9 flex items-center justify-center border transition-all duration-300 ${
+                  isScrolled
+                    ? 'border-zinc-700/30 hover:border-zinc-500'
+                    : 'border-white/10 hover:border-white/30'
+                }`}
                 data-cursor="MENU"
               >
-                {isMenuOpen ? <X className="w-4 h-4 text-white" /> : <Menu className="w-4 h-4 text-white" />}
+                {isMenuOpen ? (
+                  <X className="w-3.5 h-3.5 text-white" />
+                ) : (
+                  <Menu className="w-3.5 h-3.5 text-white" />
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden bg-black border-b border-zinc-900 overflow-hidden"
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="lg:hidden bg-[#0a0a0f]/98 backdrop-blur-md border-t border-zinc-900/50 overflow-hidden"
             >
-              <div className="grid grid-cols-1">
-                {/* Main links */}
-                {(isAuthenticated ? [
-                  { href: '/collections', label: 'CLOTHING_COLLECTIONS' },
-                  { href: '/about', label: 'BRAND_INFO' },
-                  { href: '/contact', label: 'CONTACT_US' },
-                  { href: '/account', label: 'MY_ACCOUNT' }
-                ] : [
-                  { href: '/collections', label: 'CLOTHING_COLLECTIONS' },
-                  { href: '/about', label: 'BRAND_INFO' },
-                  { href: '/contact', label: 'CONTACT_US' },
-                  { href: '/login', label: 'LOGIN_ACCOUNT' },
-                  { href: '/register', label: 'CREATE_ACCOUNT' }
-                ]).map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`block py-4 px-6 border-b border-zinc-900 font-mono text-sm transition-colors ${
-                      isActivePage(item.href)
-                        ? 'text-white bg-zinc-950'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-950'
-                    }`}
-                    data-cursor="NAV"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+              <div className="max-w-[1600px] mx-auto">
+                {/* Main Navigation */}
+                <div className="border-b border-zinc-900/50">
+                  {[
+                    { href: '/collections', label: 'Collections' },
+                    { href: '/blog', label: 'Journal' },
+                    { href: '/about', label: 'Brand' },
+                    { href: '/contact', label: 'Contact' },
+                    { href: isAuthenticated ? '/account' : '/login', label: isAuthenticated ? 'Account' : 'Login' }
+                  ].map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`block py-5 px-8 border-b border-zinc-900/50 font-mono text-[10px] uppercase tracking-[0.2em] font-light transition-all duration-300 ${
+                        isActivePage(item.href)
+                          ? 'text-white bg-zinc-900/30'
+                          : 'text-zinc-500 hover:text-white hover:bg-zinc-900/20'
+                      }`}
+                      data-cursor="NAV"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
 
-                {/* Collections grid */}
-                <div className="p-6 border-b border-zinc-900">
-                  <div className="font-mono text-xs text-zinc-400 mb-4">AVAILABLE_COLLECTIONS</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {allEmotions.slice(0, 6).map((emotion) => (
+                {/* Quick Collections */}
+                <div className="p-8 border-b border-zinc-900/50">
+                  <div className="font-mono text-[9px] text-zinc-600 mb-6 uppercase tracking-[0.3em]">
+                    Quick_Access
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {allEmotions.slice(0, 4).map((emotion) => (
                       <Link
                         key={emotion.id}
                         href={`/collections/${emotion.id}`}
-                        className="p-3 border border-zinc-800 hover:border-zinc-600 transition-colors"
+                        className="p-4 border border-zinc-700/30 hover:border-zinc-600/50 transition-all duration-300 group"
                         data-cursor="COLLECTION"
                       >
                         <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-mono text-xs text-white">{emotion.name.toUpperCase()}</div>
-                            <div className="font-mono text-[10px] text-zinc-500">
-                              STREETWEAR • LIMITED
-                            </div>
+                          <div className="font-mono text-[10px] text-white font-light group-hover:opacity-70 transition-opacity uppercase tracking-wide">
+                            {emotion.name.toUpperCase()}
                           </div>
                           <div
-                            className="w-2 h-2"
+                            className="w-2 h-2 rounded-full"
                             style={{ backgroundColor: emotion.colors?.accent || '#71717a' }}
                           />
                         </div>
@@ -217,46 +260,51 @@ export default function Navbar() {
                   </div>
                 </div>
 
-                {/* Brand status */}
-                <div className="p-6 bg-zinc-950">
-                  <div className="font-mono text-xs text-zinc-400 mb-4">{isAuthenticated ? 'USER_STATUS' : 'BRAND_STATUS'}</div>
-                  <div className="space-y-2">
-                    {isAuthenticated ? (
-                      <>
-                        <div className="flex justify-between items-center">
-                          <span className="font-mono text-xs text-zinc-500">USER</span>
-                          <span className="font-mono text-xs text-white">{user?.firstName || 'OPERATIVE'}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="font-mono text-xs text-zinc-500">ACCESS</span>
-                          <span className="font-mono text-xs text-white">{user?.accessLevel || 'CLASSIFIED'}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="font-mono text-xs text-zinc-500">ORDERS</span>
-                          <span className="font-mono text-xs text-white">{user?.orders?.length || 0}</span>
-                        </div>
-                        <button
-                          onClick={logout}
-                          className="w-full mt-4 border border-red-500 text-red-500 py-2 px-4 font-mono text-xs hover:bg-red-500 hover:text-white transition-colors"
-                        >
-                          LOGOUT_SYSTEM
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex justify-between items-center">
-                          <span className="font-mono text-xs text-zinc-500">STORE</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-white">ONLINE</span>
-                            <div className="w-1 h-1 bg-white animate-pulse" />
-                          </div>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="font-mono text-xs text-zinc-500">COLLECTIONS</span>
-                          <span className="font-mono text-xs text-white">{allEmotions.length}</span>
-                        </div>
-                      </>
-                    )}
+                {/* Mobile Actions */}
+                <div className="p-8 flex items-center gap-3 sm:hidden">
+                  {isAuthenticated ? (
+                    <>
+                      <Link
+                        href="/account"
+                        className="flex-1 border border-zinc-700/30 hover:border-zinc-500 text-white py-3.5 px-4 font-mono text-[10px] text-center uppercase tracking-[0.2em] font-light transition-all duration-300"
+                        data-cursor="ACCOUNT"
+                      >
+                        Account
+                      </Link>
+                      <button
+                        onClick={logout}
+                        className="flex-1 border border-zinc-700/30 hover:border-red-500/50 text-white hover:text-red-400 py-3.5 px-4 font-mono text-[10px] uppercase tracking-[0.2em] font-light transition-all duration-300"
+                        data-cursor="LOGOUT"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="flex-1 border border-zinc-700/30 hover:border-zinc-500 text-white py-3.5 px-4 font-mono text-[10px] text-center uppercase tracking-[0.2em] font-light transition-all duration-300"
+                      data-cursor="LOGIN"
+                    >
+                      Login
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => openDiagnostic('nav')}
+                    className="w-12 h-12 border border-zinc-700/30 hover:border-zinc-500 flex items-center justify-center transition-all duration-300"
+                    data-cursor="SCAN"
+                  >
+                    <Terminal className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+
+                {/* Status Bar */}
+                <div className="p-8 bg-zinc-950/50">
+                  <div className="flex items-center justify-between text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em]">
+                    <div>System_Status</div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-1 bg-green-500/70 rounded-full animate-pulse" />
+                      <span className="text-green-500/70">Online</span>
+                    </div>
                   </div>
                 </div>
               </div>

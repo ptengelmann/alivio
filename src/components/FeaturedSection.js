@@ -1,219 +1,147 @@
-import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Square } from 'lucide-react';
 import { formatMoney } from '../lib/money';
 
 export default function FeaturedSection({ featuredProducts = [] }) {
-  return (
-    <section className="bg-black border-t border-zinc-900 overflow-hidden">
-      <div className="max-w-full">
-        {/* Section header - Brutalist */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 border-b border-zinc-900">
-          <div className="lg:col-span-6 p-4 sm:p-6 lg:p-16 border-b lg:border-b-0 lg:border-r border-zinc-900">
-            <motion.div
-              className="flex items-center gap-2 text-xs mb-8 font-mono text-zinc-400"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <Square className="w-2 h-2 fill-current" />
-              <span>CURRENT_CLOTHING_DROPS</span>
-            </motion.div>
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-            <motion.h2
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl font-black text-white mb-6 lg:mb-8 font-mono leading-[0.8] break-words"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              LATEST<br />DROPS
-            </motion.h2>
-
-            <motion.div
-              className="space-y-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="text-lg text-zinc-300 max-w-2xl">
-                Premium streetwear drops. Limited quantities. Emotional compound infusion.
-              </div>
-              <div className="font-mono text-sm text-zinc-400">
-                T-shirts • Hoodies • Accessories. Quality-verified. Underground manufacturing.
-              </div>
-            </motion.div>
+  if (featuredProducts.length === 0) {
+    return (
+      <section className="bg-black border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+          <div className="text-xs font-mono text-zinc-500 mb-4">COLLECTION_UNAVAILABLE</div>
+          <div className="text-2xl font-black text-white mb-8 font-mono">
+            NEW_DROPS_COMING_SOON
           </div>
+          <Link
+            href="/collections"
+            className="inline-block border border-zinc-800 text-white py-3 px-8 font-mono text-xs hover:border-white transition-colors"
+          >
+            VIEW_COLLECTIONS
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
-          <div className="lg:col-span-6 p-4 sm:p-6 lg:p-16 bg-zinc-950">
+  return (
+    <section className="bg-black border-t border-zinc-900">
+      {/* Minimal Header */}
+      <div className="border-b border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex items-center justify-between">
+          <div>
+            <div className="text-xs font-mono text-zinc-500 mb-2">CURRENT_DROPS</div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white font-mono">
+              NEW ARRIVALS
+            </h2>
+          </div>
+          <Link
+            href="/collections"
+            className="hidden sm:block border border-zinc-800 text-white py-2 px-6 font-mono text-xs hover:border-white hover:bg-white hover:text-black transition-all"
+            data-cursor="BROWSE"
+          >
+            VIEW_ALL
+          </Link>
+        </div>
+      </div>
+
+      {/* Large Product Grid */}
+      <div className="max-w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
+          {featuredProducts.slice(0, 8).map((product, index) => (
             <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              key={product.id || index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: index * 0.05 }}
+              onHoverStart={() => setHoveredIndex(index)}
+              onHoverEnd={() => setHoveredIndex(null)}
             >
-              <div className="font-mono text-xs text-zinc-400 mb-4">DROP_STATUS</div>
-              <div className="space-y-3">
-                {[
-                  { label: "PRODUCTS_LIVE", value: featuredProducts.length.toString().padStart(2, '0') },
-                  { label: "COLLECTIONS_ACTIVE", value: new Set(featuredProducts.map(p => p.collection?.handle)).size.toString().padStart(2, '0') },
-                  { label: "QUALITY_VERIFIED", value: "100%" },
-                  { label: "MANUFACTURING", value: "COMPLETE" },
-                  { label: "STOREFRONT_STATUS", value: "LIVE" }
-                ].map((stat) => (
-                  <div key={stat.label} className="flex justify-between py-2 border-b border-zinc-800">
-                    <span className="text-xs font-mono text-zinc-500">{stat.label}</span>
-                    <span className="text-xs font-mono text-white">{stat.value}</span>
-                  </div>
-                ))}
-              </div>
-
               <Link
-                href="/collections"
-                className="block w-full mt-8 border border-zinc-800 py-3 px-4 font-mono text-xs hover:border-white transition-colors text-center"
+                href={`/products/${product.handle}`}
+                className="group block border border-zinc-900 hover:border-white transition-colors"
                 data-cursor="VIEW"
               >
-                SHOP_ALL_COLLECTIONS
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-
-
-        {/* Products grid - Clinical layout */}
-        {featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-zinc-900">
-            {featuredProducts.slice(0, 6).map((product, index) => (
-              <motion.div
-                key={product.id}
-                className="border border-zinc-900 bg-black group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                {/* Product image */}
-                <div className="aspect-[4/5] relative border-b border-zinc-900">
+                {/* Large Product Image */}
+                <div className="aspect-[3/4] relative overflow-hidden bg-zinc-950">
                   {product.featuredImage?.url ? (
                     <img
                       src={product.featuredImage.url}
                       alt={product.featuredImage.altText || product.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full bg-zinc-950 flex items-center justify-center">
+                    <div className="w-full h-full flex items-center justify-center">
                       <div className="text-center">
-                        <div className="text-2xl font-black text-zinc-700 mb-2 font-mono">
-                          {product.emotion?.name?.charAt(0) || 'T'}
+                        <div className="text-4xl font-black text-zinc-800 mb-2 font-mono">
+                          ALV
                         </div>
-                        <div className="text-xs text-zinc-600 font-mono">TEXTILE</div>
+                        <div className="text-xs text-zinc-700 font-mono">NO_IMAGE</div>
                       </div>
                     </div>
                   )}
 
-                  {/* Size range overlay */}
-                  <div className="absolute top-4 left-4">
-                    <div className="px-2 py-1 text-[10px] font-mono bg-black/90 border border-zinc-700 text-zinc-300">
-                      XS - XL AVAILABLE
+                  {/* Minimal Overlay - Only on hover */}
+                  <div className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+                    hoveredIndex === index ? 'opacity-100' : 'opacity-0'
+                  }`}>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="border border-white text-white py-3 px-8 font-mono text-xs font-bold">
+                        VIEW_PRODUCT
+                      </div>
                     </div>
                   </div>
 
-                  {/* Item code */}
-                  <div className="absolute top-4 right-4">
-                    <div className="px-2 py-1 text-[10px] font-mono bg-black/90 border border-zinc-700 text-white">
-                      ITEM-{product.emotion?.contraband?.batchNumber?.slice(-7) || 'UNKNOWN'}
-                    </div>
-                  </div>
-
-                  {/* Status indicator */}
-                  <div className="absolute bottom-4 right-4">
-                    <div className="w-2 h-2 bg-white animate-pulse" />
+                  {/* Stock indicator - top right */}
+                  <div className="absolute top-3 right-3">
+                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
                   </div>
                 </div>
 
-                {/* Product data */}
-                <div className="p-6">
-                  {/* Header */}
-                  <div className="mb-4">
-                    <h4 className="font-black font-mono text-white mb-1 text-sm">{product.title}</h4>
-                    <div className="text-xs text-zinc-500 font-mono">
-                      {product.emotion?.name?.toUpperCase() || 'UNCLASSIFIED'}_COLLECTION
+                {/* Product Info - Minimal */}
+                <div className="p-4 bg-black border-t border-zinc-900">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-mono text-xs text-white truncate mb-1">
+                        {product.title.toUpperCase()}
+                      </h3>
+                      <div className="text-[10px] text-zinc-500 font-mono truncate">
+                        {product.emotion?.name?.toUpperCase() || product.collection?.title?.toUpperCase() || 'ALÍVIO'}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Specs */}
-                  <div className="space-y-2 mb-6">
-                    <div className="flex justify-between py-1 border-b border-zinc-900">
-                      <span className="text-xs font-mono text-zinc-500">PRICE</span>
-                      <span className="text-xs font-mono text-white">
-                        {product.priceRange?.minVariantPrice?.amount
-                          ? formatMoney(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
-                          : product.variants?.edges?.[0]?.node?.price?.amount
-                            ? formatMoney(product.variants.edges[0].node.price.amount, product.variants.edges[0].node.price.currencyCode)
-                            : product.variants?.[0]?.price
-                              ? formatMoney(product.variants[0].price, 'GBP')
-                              : 'PRICE_TBA'}
-                      </span>
+                    <div className="text-xs font-mono text-white font-bold whitespace-nowrap">
+                      {product.priceRange?.minVariantPrice?.amount
+                        ? formatMoney(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
+                        : product.variants?.edges?.[0]?.node?.price?.amount
+                          ? formatMoney(product.variants.edges[0].node.price.amount, product.variants.edges[0].node.price.currencyCode)
+                          : product.variants?.[0]?.price
+                            ? formatMoney(product.variants[0].price, 'GBP')
+                            : '—'}
                     </div>
-                    <div className="flex justify-between py-1 border-b border-zinc-900">
-                      <span className="text-xs font-mono text-zinc-500">MATERIAL</span>
-                      <span className="text-xs font-mono text-white">
-                        100% COTTON
-                      </span>
-                    </div>
-                    <div className="flex justify-between py-1 border-b border-zinc-900">
-                      <span className="text-xs font-mono text-zinc-500">STOCK</span>
-                      <span className="text-xs font-mono text-white">IN STOCK</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="space-y-2">
-                    <Link
-                      href={`/products/${product.handle}`}
-                      className="block w-full bg-white text-black py-3 px-4 font-mono font-bold text-xs tracking-wider hover:bg-zinc-100 transition-colors text-center"
-                      data-cursor="VIEW"
-                    >
-                      VIEW_PRODUCT
-                    </Link>
-                    <button className="w-full border border-zinc-800 text-white py-2 px-4 font-mono text-xs hover:border-white transition-colors">
-                      SIZE_GUIDE
-                    </button>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        ) : (
-          /* No products fallback */
-          <div className="p-16 border-t border-zinc-900 bg-zinc-950">
-            <motion.div
-              className="max-w-lg mx-auto text-center"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-2xl font-black text-white mb-4 font-mono">
-                COLLECTION_UNAVAILABLE
-              </div>
-              <p className="text-zinc-400 mb-8 font-mono text-sm">
-                Current clothing drops under production.
-                <br />
-                New releases coming soon.
-              </p>
-              <Link
-                href="/collections"
-                className="border border-zinc-800 text-white py-3 px-6 font-mono font-bold text-xs hover:border-white transition-all"
-                data-cursor="ACCESS"
-              >
-                NOTIFY_ME
               </Link>
             </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+          <div className="text-xs font-mono text-zinc-500 mb-4">
+            {featuredProducts.length} PRODUCTS_AVAILABLE
           </div>
-        )}
+          <Link
+            href="/collections"
+            className="inline-block bg-white text-black py-4 px-12 font-mono font-bold text-sm tracking-wider hover:bg-zinc-100 transition-colors"
+            data-cursor="SHOP"
+          >
+            SHOP_ALL_PRODUCTS
+          </Link>
+        </div>
       </div>
     </section>
   );

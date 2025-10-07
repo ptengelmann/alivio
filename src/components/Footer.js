@@ -18,192 +18,140 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black border-t border-zinc-900">
-      <div className="max-w-full">
+    <footer className="bg-[#0a0a0f] border-t border-zinc-900/50">
+      <div className="max-w-[1600px] mx-auto px-8 lg:px-12 py-16 lg:py-24">
         {/* Main footer content */}
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
 
-          {/* Network info */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-3 p-8 lg:p-16 border-r border-zinc-900 border-b md:border-b-0">
-            <div className="flex items-center gap-2 mb-6">
-              <Square className="w-3 h-3 fill-current text-white" />
-              <div className="font-black text-lg font-mono text-white">ALÍVIO</div>
-            </div>
-
-            <div className="space-y-4 mb-8">
-              <div className="font-mono text-xs text-zinc-400">STREETWEAR_BRAND</div>
-              <div className="text-sm text-zinc-300 leading-relaxed max-w-xs">
-                Premium streetwear collections infused with authentic emotional compounds through limited drops.
+          {/* Brand info */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 bg-white" />
+              <div className="flex flex-col">
+                <div className="font-black text-sm text-white leading-none mb-0.5">ALIVIO</div>
+                <div className="text-[9px] text-zinc-600 tracking-[0.2em] leading-none uppercase">Emotional_Contraband</div>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between py-1 border-b border-zinc-900">
-                <span className="font-mono text-xs text-zinc-500">STATUS</span>
-                <span className="font-mono text-xs text-white">OPERATIONAL</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-zinc-900">
-                <span className="font-mono text-xs text-zinc-500">COLLECTIONS</span>
-                <span className="font-mono text-xs text-white">{allEmotions.length.toString().padStart(2, '0')}</span>
+            <div className="text-xs text-zinc-500 leading-relaxed mb-6 font-light tracking-wide">
+              Laboratory-grade streetwear. Two core emotions. Limited batch production.
+            </div>
+
+            <div className="space-y-2 text-[10px] tracking-wider text-zinc-600 uppercase">
+              <div className="flex justify-between py-1">
+                <span>Status</span>
+                <span className="text-green-500/70">Operational</span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="font-mono text-xs text-zinc-500">SECURITY</span>
-                <span className="font-mono text-xs text-white">SSL-ENCRYPTED</span>
+                <span>Collections</span>
+                <span className="text-white">{allEmotions.length.toString().padStart(2, '0')}</span>
               </div>
             </div>
           </div>
 
-          {/* Collection access */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-3 p-8 lg:p-16 border-r border-zinc-900 border-b lg:border-b-0">
-            <div className="font-mono text-xs text-zinc-400 mb-6">COLLECTION_ACCESS</div>
+          {/* Collections */}
+          <div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Collections</div>
 
-            <div className="space-y-2">
-              {allEmotions.slice(0, 6).map((emotion) => (
+            <div className="space-y-3">
+              {allEmotions.map((emotion) => (
                 <Link
                   key={emotion.id}
                   href={`/collections/${emotion.id}`}
-                  className="block py-2 border-b border-zinc-900 group"
+                  className="block text-xs text-zinc-400 hover:text-white transition-colors uppercase tracking-wide"
                   data-cursor="COLLECTION"
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="font-mono text-xs text-zinc-300 group-hover:text-white transition-colors">
-                        {emotion.name.toUpperCase()}
-                      </div>
-                      <div className="font-mono text-[10px] text-zinc-600">
-                        STREETWEAR • LIMITED
-                      </div>
-                    </div>
-                    <div
-                      className="w-1 h-1"
-                      style={{ backgroundColor: emotion.colors?.accent || '#71717a' }}
-                    />
-                  </div>
+                  {emotion.name}
                 </Link>
               ))}
 
               <Link
                 href="/collections"
-                className="block py-2 font-mono text-xs text-zinc-500 hover:text-white transition-colors"
+                className="block text-xs text-zinc-500 hover:text-white transition-colors pt-3 border-t border-zinc-900/50 uppercase tracking-wide"
                 data-cursor="VIEW"
               >
-                SHOP_ALL_COLLECTIONS →
+                Shop All →
               </Link>
             </div>
           </div>
 
-          {/* Brand access */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-3 p-8 lg:p-16 border-r border-zinc-900 border-b md:border-b-0">
-            <div className="font-mono text-xs text-zinc-400 mb-6">BRAND_LINKS</div>
+          {/* Brand Links */}
+          <div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Information</div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {[
-                { label: 'Brand Story', href: '/about', cursor: 'INFO' },
-                { label: 'Size Guide', href: '/size-guide', cursor: 'GUIDE' },
-                { label: 'Contact Us', href: '/contact', cursor: 'CONTACT' },
-                { label: 'Store Locator', href: '/stores', cursor: 'LOCATE' },
-                { label: 'Lookbook', href: '/lookbook', cursor: 'LOOK' }
+                { label: 'About', href: '/about' },
+                { label: 'Contact', href: '/contact' },
+                { label: 'Size Guide', href: '/size-guide' },
+                { label: 'Terms', href: '/terms' },
+                { label: 'Privacy', href: '/privacy' }
               ].map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block font-mono text-xs text-zinc-500 hover:text-white transition-colors py-1"
-                  data-cursor={link.cursor}
+                  className="block text-xs text-zinc-400 hover:text-white transition-colors uppercase tracking-wide"
                 >
-                  {link.label.toUpperCase()}
+                  {link.label}
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Newsletter signup */}
-          <div className="col-span-12 md:col-span-6 lg:col-span-3 p-8 lg:p-16 border-b lg:border-b-0">
-            <div className="font-mono text-xs text-zinc-400 mb-6">NEWSLETTER_SIGNUP</div>
+          {/* Newsletter */}
+          <div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Newsletter</div>
 
-            <div className="text-sm text-zinc-300 mb-6 leading-relaxed">
-              Get notified about new drops and exclusive releases.
+            <div className="text-xs text-zinc-500 mb-6 leading-relaxed font-light tracking-wide">
+              New batch notifications and exclusive access.
             </div>
 
-            <form onSubmit={handleNewsletterSubmit} className="space-y-4">
-              <div>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ENTER_EMAIL_ADDRESS"
-                  className="w-full bg-zinc-950 border border-zinc-800 py-3 px-4 font-mono text-xs text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-                  required
-                />
-              </div>
+            <form onSubmit={handleNewsletterSubmit} className="space-y-3 mb-8">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                className="w-full bg-transparent border border-zinc-700/50 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-white/50 focus:outline-none transition-colors tracking-wide"
+                required
+              />
 
               <button
                 type="submit"
-                className="w-full bg-white text-black py-3 px-4 font-mono font-bold text-xs tracking-wider hover:bg-zinc-100 transition-colors"
+                className="w-full bg-white text-black py-3 px-4 text-[10px] uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors font-medium"
                 data-cursor="SUBMIT"
               >
-                SUBSCRIBE
+                Subscribe
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-zinc-900">
-              <div className="font-mono text-xs text-zinc-400 mb-2">SOCIAL_MEDIA</div>
-              <div className="flex gap-4">
-                {[
-                  { label: 'INSTAGRAM', href: '#', cursor: 'SOCIAL' },
-                  { label: 'TWITTER', href: '#', cursor: 'SOCIAL' },
-                  { label: 'TIKTOK', href: '#', cursor: 'SOCIAL' }
-                ].map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="font-mono text-xs text-zinc-500 hover:text-white transition-colors"
-                    data-cursor={social.cursor}
-                  >
-                    {social.label}
-                  </a>
-                ))}
-              </div>
+            <div className="flex gap-6">
+              {[
+                { label: 'Instagram', href: '#' },
+                { label: 'Twitter', href: '#' }
+              ].map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="text-[10px] text-zinc-500 hover:text-white transition-colors uppercase tracking-wider"
+                  data-cursor="SOCIAL"
+                >
+                  {social.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-zinc-900 bg-zinc-950">
-          <div className="grid grid-cols-12">
-            <div className="col-span-12 lg:col-span-8 p-6 border-r border-zinc-900">
-              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                <div className="font-mono text-xs text-zinc-500">
-                  © {currentYear} ALÍVIO DISTRIBUTION NETWORK
-                </div>
-                <div className="flex gap-6">
-                  {[
-                    { label: 'Terms', href: '/terms' },
-                    { label: 'Privacy', href: '/privacy' },
-                    { label: 'Security', href: '/security' }
-                  ].map((legal) => (
-                    <Link
-                      key={legal.href}
-                      href={legal.href}
-                      className="font-mono text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
-                      data-cursor="LEGAL"
-                    >
-                      {legal.label.toUpperCase()}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+        <div className="pt-8 border-t border-zinc-900/50">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-[10px] text-zinc-600 tracking-wider">
+            <div className="uppercase">
+              © {currentYear} Alívio. All rights reserved.
             </div>
-
-            <div className="col-span-12 lg:col-span-4 p-6">
-              <div className="flex items-center justify-between">
-                <div className="font-mono text-xs text-zinc-600">
-                  CLASSIFICATION: PREMIUM
-                </div>
-                <div className="flex items-center gap-2">
-                  <Terminal className="w-3 h-3 text-zinc-600" />
-                  <div className="w-1 h-1 bg-zinc-600 animate-pulse" />
-                </div>
-              </div>
+            <div className="flex items-center gap-2 text-[9px]">
+              <span className="uppercase tracking-[0.3em]">Batch_Authentication_System</span>
+              <div className="w-1 h-1 bg-green-500/50 rounded-full animate-pulse" />
             </div>
           </div>
         </div>
