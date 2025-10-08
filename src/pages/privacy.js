@@ -14,13 +14,13 @@ export default function PrivacyPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         <div className="py-12 lg:py-16">
           <div className="max-w-[900px] mx-auto px-8 lg:px-12">
             <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
               Legal
             </div>
-            <h1 className="text-4xl lg:text-5xl font-light text-white tracking-tight mb-12 leading-tight">
+            <h1 className="text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-12 leading-tight">
               Privacy Policy
             </h1>
 
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">1. Information We Collect</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">1. Information We Collect</h2>
                 <p className="mb-4">
                   We collect information that you provide directly to us, including:
                 </p>
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">2. How We Use Your Information</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">2. How We Use Your Information</h2>
                 <p className="mb-4">
                   We use the information we collect to:
                 </p>
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">3. Legal Basis for Processing (UK GDPR)</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">3. Legal Basis for Processing (UK GDPR)</h2>
                 <p className="mb-4">
                   We process your personal data on the following legal bases:
                 </p>
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">4. Sharing Your Information</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">4. Sharing Your Information</h2>
                 <p className="mb-4">
                   We may share your information with:
                 </p>
@@ -102,7 +102,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">5. Cookies</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">5. Cookies</h2>
                 <p className="mb-4">
                   We use cookies and similar tracking technologies to enhance your experience on our website. Cookies help us:
                 </p>
@@ -117,7 +117,7 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">6. Your Rights</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">6. Your Rights</h2>
                 <p className="mb-4">
                   Under UK GDPR, you have the right to:
                 </p>
@@ -136,42 +136,42 @@ export default function PrivacyPage() {
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">7. Data Retention</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">7. Data Retention</h2>
                 <p>
                   We retain your personal information for as long as necessary to fulfil the purposes outlined in this policy, unless a longer retention period is required by law. Order information is typically retained for 7 years for tax purposes.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">8. Data Security</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">8. Data Security</h2>
                 <p>
                   We implement appropriate technical and organisational measures to protect your personal information against unauthorised access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">9. International Transfers</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">9. International Transfers</h2>
                 <p>
                   Your information may be transferred to and processed in countries outside the UK. When we do this, we ensure appropriate safeguards are in place to protect your information in accordance with UK data protection laws.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">10. Children's Privacy</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">10. Children's Privacy</h2>
                 <p>
                   Our services are not directed to individuals under 18. We do not knowingly collect personal information from children. If you become aware that a child has provided us with personal information, please contact us.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">11. Changes to This Policy</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">11. Changes to This Policy</h2>
                 <p>
                   We may update this privacy policy from time to time. We will notify you of any significant changes by posting the new policy on this page and updating the "Last updated" date.
                 </p>
               </div>
 
               <div>
-                <h2 className="text-xl text-white font-light mb-4 tracking-tight">12. Contact Us</h2>
+                <h2 className="text-xl text-zinc-900 font-light mb-4 tracking-tight">12. Contact Us</h2>
                 <p className="mb-4">
                   If you have any questions about this privacy policy or our data practices, please contact us:
                 </p>
@@ -191,7 +191,7 @@ export default function PrivacyPage() {
             <div className="mt-12 pt-8 border-t border-zinc-900/50">
               <Link
                 href="/terms"
-                className="text-xs text-zinc-500 hover:text-white transition-colors tracking-wide"
+                className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors tracking-wide"
               >
                 View Terms & Conditions →
               </Link>

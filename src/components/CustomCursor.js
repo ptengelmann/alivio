@@ -13,9 +13,9 @@ export default function CustomCursor() {
 
   // Enhanced cursor states
   const cursorStates = {
-    default: { size: 4, color: '#ffffff', border: false },
+    default: { size: 4, color: '#18181b', border: false },
     hover: { size: 24, color: 'transparent', border: true },
-    active: { size: 20, color: '#ffffff', border: true },
+    active: { size: 20, color: '#18181b', border: true },
     interactive: { size: 32, color: 'transparent', border: true }
   };
 
@@ -152,7 +152,7 @@ export default function CustomCursor() {
             width: cursorSize,
             height: cursorSize,
             backgroundColor: currentState.color,
-            border: currentState.border ? '1px solid rgba(255, 255, 255, 0.6)' : 'none',
+            border: currentState.border ? '1px solid rgba(24, 24, 27, 0.6)' : 'none',
           }}
           animate={{
             scale: cursorState === 'default' ? 1 : 1,
@@ -163,7 +163,7 @@ export default function CustomCursor() {
         {/* Outer ring for interactive states */}
         {cursorState !== 'default' && (
           <motion.div
-            className="absolute inset-0 rounded-full border border-white/30"
+            className="absolute inset-0 rounded-full border border-zinc-900/30"
             style={{
               width: cursorSize,
               height: cursorSize,
@@ -178,7 +178,7 @@ export default function CustomCursor() {
         {/* Pulse effect for interactive elements */}
         {cursorState === 'interactive' && (
           <motion.div
-            className="absolute inset-0 rounded-full border border-white/20"
+            className="absolute inset-0 rounded-full border border-zinc-900/20"
             style={{
               width: cursorSize,
               height: cursorSize,
@@ -212,7 +212,7 @@ export default function CustomCursor() {
             exit={{ opacity: 0, scale: 0.8, y: "calc(-50% + 20px)" }}
             transition={{ duration: 0.15, ease: "easeOut" }}
           >
-            <div className="bg-black/90 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-1 border border-white/20 whitespace-nowrap tracking-wider">
+            <div className="bg-zinc-900/90 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-1 border border-zinc-900 whitespace-nowrap tracking-wider">
               {cursorLabel}
             </div>
           </motion.div>

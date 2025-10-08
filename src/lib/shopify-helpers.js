@@ -492,6 +492,15 @@ export async function getFeaturedProducts(limit = 6) {
             url: product.images[0].src,
             altText: product.images[0].alt
           } : null,
+          // Add all images for the carousel
+          images: {
+            edges: product.images?.map(image => ({
+              node: {
+                url: image.src,
+                altText: image.alt
+              }
+            })) || []
+          },
           priceRange: product.variants && product.variants.length > 0 ? {
             minVariantPrice: {
               amount: product.variants[0].price,

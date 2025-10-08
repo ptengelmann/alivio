@@ -16,7 +16,7 @@ export default function AboutPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* About Section */}
         <div className="py-12 lg:py-16">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
@@ -26,7 +26,7 @@ export default function AboutPage() {
                 <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
                   About_Us
                 </div>
-                <h1 className="text-4xl lg:text-5xl font-light text-white tracking-tight mb-8 leading-tight">
+                <h1 className="text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-8 leading-tight">
                   Emotional contraband from London
                 </h1>
                 <div className="space-y-6 text-sm text-zinc-400 leading-relaxed font-light tracking-wide">
@@ -61,7 +61,7 @@ export default function AboutPage() {
               <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
                 What_We_Do
               </div>
-              <h2 className="text-3xl lg:text-4xl font-light text-white tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 tracking-tight">
                 Our Process
               </h2>
             </div>
@@ -98,9 +98,9 @@ export default function AboutPage() {
                   transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <div className="mb-6">
-                    <item.icon className="w-8 h-8 text-white" />
+                    <item.icon className="w-8 h-8 text-zinc-900" />
                   </div>
-                  <h3 className="text-sm text-white mb-3 uppercase tracking-wide font-light">
+                  <h3 className="text-sm text-zinc-900 mb-3 uppercase tracking-wide font-light">
                     {item.label}
                   </h3>
                   <p className="text-xs text-zinc-500 leading-relaxed font-light tracking-wide">
@@ -116,19 +116,19 @@ export default function AboutPage() {
         <div className="py-12 lg:py-16 border-t border-zinc-900/50">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
             <div className="max-w-2xl">
-              <h2 className="text-3xl lg:text-4xl font-light text-white mb-8 leading-tight tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-8 leading-tight tracking-tight">
                 Explore the current batch
               </h2>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/collections"
-                  className="inline-flex bg-white text-black py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
+                  className="inline-flex bg-zinc-900 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
                 >
                   Shop Collections
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex border border-zinc-700/30 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
+                  className="inline-flex border border-zinc-300 text-zinc-900 py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
                 >
                   Get in Touch
                 </Link>

@@ -233,23 +233,23 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="w-full max-w-3xl bg-[#0a0a0f] border border-zinc-700/30 relative overflow-hidden"
+        className="w-full max-w-3xl bg-white border border-zinc-300 relative overflow-hidden shadow-2xl"
         style={{ maxHeight: '90vh' }}
       >
         {/* Header */}
-        <div className="border-b border-zinc-700/30 px-8 lg:px-12 py-6 flex items-center justify-between">
+        <div className="border-b border-zinc-300 px-8 lg:px-12 py-6 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-light text-white tracking-[0.3em] uppercase mb-2">
+            <h2 className="text-sm font-light text-zinc-900 tracking-[0.3em] uppercase mb-2">
               Emotion_Diagnostic
             </h2>
-            <p className="text-[9px] text-zinc-500 tracking-[0.2em] uppercase font-light">
+            <p className="text-[9px] text-zinc-700 tracking-[0.2em] uppercase font-light">
               Collection_Matching_System
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="text-zinc-500 hover:text-white transition-colors p-2 border border-zinc-700/30 hover:border-zinc-500"
+            className="text-zinc-700 hover:text-zinc-900 transition-colors p-2 border border-zinc-300 hover:border-zinc-500"
             data-cursor="CLOSE"
           >
             <X className="w-4 h-4" />
@@ -270,12 +270,12 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-12 h-12 border border-zinc-700/50 border-t-white mx-auto mb-8"
+                  className="w-12 h-12 border border-zinc-300 border-t-zinc-900 mx-auto mb-8"
                 />
-                <h3 className="text-xs font-light text-white mb-3 uppercase tracking-[0.3em]">
+                <h3 className="text-xs font-light text-zinc-900 mb-3 uppercase tracking-[0.3em]">
                   Processing_Selection
                 </h3>
-                <p className="text-[10px] text-zinc-500 tracking-[0.2em] uppercase font-light">
+                <p className="text-[10px] text-zinc-700 tracking-[0.2em] uppercase font-light">
                   Analyzing_Emotional_State
                 </p>
               </motion.div>
@@ -291,39 +291,39 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 className="max-w-xl mx-auto"
               >
                 <div className="text-center mb-12">
-                  <div className="inline-flex items-center gap-2 px-6 py-2 border border-zinc-700/30 mb-8">
-                    <CheckCircle className="w-3 h-3 text-white" />
-                    <span className="text-[9px] text-zinc-400 tracking-[0.3em] uppercase font-light">
+                  <div className="inline-flex items-center gap-2 px-6 py-2 border border-zinc-300 mb-8">
+                    <CheckCircle className="w-3 h-3 text-zinc-900" />
+                    <span className="text-[9px] text-zinc-700 tracking-[0.3em] uppercase font-light">
                       Collection_Matched
                     </span>
                   </div>
 
-                  <h3 className="text-3xl lg:text-4xl font-light text-white mb-6 tracking-tight">
+                  <h3 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-6 tracking-tight">
                     {result.name}
                   </h3>
 
-                  <p className="text-sm text-zinc-400 leading-relaxed font-light tracking-wide">
+                  <p className="text-sm text-zinc-700 leading-relaxed font-light tracking-wide">
                     {result.description}
                   </p>
                 </div>
 
                 {result.available ? (
                   <div className="space-y-6">
-                    <div className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase text-center">
+                    <div className="text-[9px] text-zinc-700 tracking-[0.3em] uppercase text-center">
                       Available_Now
                     </div>
                     <div className="space-y-3">
                       {result.products?.map((product, index) => (
-                        <div key={index} className="border border-zinc-700/30 p-6">
+                        <div key={index} className="border border-zinc-300 p-6">
                           <div className="flex justify-between items-start mb-2">
-                            <div className="text-xs text-white font-light tracking-wide uppercase">
+                            <div className="text-xs text-zinc-900 font-light tracking-wide uppercase">
                               {product.name}
                             </div>
-                            <div className="text-xs text-white font-light">
+                            <div className="text-xs text-zinc-900 font-light">
                               {product.price}
                             </div>
                           </div>
-                          <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                          <div className="text-[10px] text-zinc-700 uppercase tracking-wider">
                             {product.size}
                           </div>
                         </div>
@@ -332,7 +332,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                     <div className="flex gap-4 pt-4">
                       <Link
                         href={`/collections/${result.shopifyHandle || result.id}`}
-                        className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
+                        className="flex-1 py-4 px-6 bg-zinc-900 text-white hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                         onClick={onClose}
                         data-cursor="SHOP"
                       >
@@ -340,7 +340,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       </Link>
                       <button
                         onClick={restartQuiz}
-                        className="px-6 py-4 border border-zinc-700/30 text-zinc-400 hover:border-zinc-500 hover:text-white transition-all text-[10px] uppercase tracking-[0.2em] font-light"
+                        className="px-6 py-4 border border-zinc-300 text-zinc-700 hover:border-zinc-500 hover:text-zinc-900 transition-all text-[10px] uppercase tracking-[0.2em] font-light"
                         data-cursor="RESTART"
                       >
                         Retake
@@ -349,11 +349,11 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="border border-zinc-700/30 p-6 text-center">
-                      <p className="text-[9px] text-zinc-500 tracking-[0.3em] uppercase mb-3">
+                    <div className="border border-zinc-300 p-6 text-center">
+                      <p className="text-[9px] text-zinc-700 tracking-[0.3em] uppercase mb-3">
                         Collection_Status: In_Development
                       </p>
-                      <p className="text-xs text-zinc-400 font-light tracking-wide">
+                      <p className="text-xs text-zinc-700 font-light tracking-wide">
                         {result.name} collection launches {result.launchDate}
                       </p>
                     </div>
@@ -362,7 +362,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       {result.preorderAvailable ? (
                         <Link
                           href={`/collections/${result.id}`}
-                          className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
+                          className="flex-1 py-4 px-6 bg-zinc-900 text-white hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                           onClick={onClose}
                           data-cursor="PREORDER"
                         >
@@ -371,7 +371,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       ) : (
                         <Link
                           href="/collections/euphoria"
-                          className="flex-1 py-4 px-6 bg-white text-black hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
+                          className="flex-1 py-4 px-6 bg-zinc-900 text-white hover:bg-zinc-200 transition-all text-[10px] uppercase tracking-[0.2em] font-light text-center"
                           onClick={onClose}
                           data-cursor="SHOP"
                         >
@@ -380,7 +380,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       )}
                       <button
                         onClick={restartQuiz}
-                        className="px-6 py-4 border border-zinc-700/30 text-zinc-400 hover:border-zinc-500 hover:text-white transition-all text-[10px] uppercase tracking-[0.2em] font-light"
+                        className="px-6 py-4 border border-zinc-300 text-zinc-700 hover:border-zinc-500 hover:text-zinc-900 transition-all text-[10px] uppercase tracking-[0.2em] font-light"
                         data-cursor="RESTART"
                       >
                         Retake
@@ -402,11 +402,11 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
               >
                 {/* Progress */}
                 <div className="mb-12">
-                  <div className="flex items-center justify-between text-[9px] text-zinc-500 tracking-[0.3em] uppercase mb-4">
+                  <div className="flex items-center justify-between text-[9px] text-zinc-700 tracking-[0.3em] uppercase mb-4">
                     <span>Question_{(currentQuestion + 1).toString().padStart(2, '0')}</span>
                     <span>{Math.round(((currentQuestion + 1) / DIAGNOSTIC_QUESTIONS.length) * 100)}%_Complete</span>
                   </div>
-                  <div className="w-full bg-zinc-900/50 h-px">
+                  <div className="w-full bg-white/50 h-px">
                     <motion.div
                       className="h-full bg-white"
                       initial={{ width: 0 }}
@@ -417,7 +417,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 </div>
 
                 {/* Question */}
-                <h3 className="text-xl lg:text-2xl font-light text-white mb-12 leading-relaxed tracking-tight">
+                <h3 className="text-xl lg:text-2xl font-light text-zinc-900 mb-12 leading-relaxed tracking-tight">
                   {DIAGNOSTIC_QUESTIONS[currentQuestion]?.question}
                 </h3>
 
@@ -430,7 +430,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                       onClick={() => handleAnswer(DIAGNOSTIC_QUESTIONS[currentQuestion].id, option.value)}
-                      className="w-full text-left p-5 border border-zinc-700/30 hover:border-zinc-500 transition-all group"
+                      className="w-full text-left p-5 border border-zinc-300 hover:border-zinc-500 transition-all group"
                       data-cursor="SELECT"
                     >
                       <div className="flex items-center justify-between">
@@ -441,11 +441,11 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                               style={{ backgroundColor: option.color }}
                             />
                           )}
-                          <span className="text-sm text-zinc-400 group-hover:text-white transition-colors font-light tracking-wide">
+                          <span className="text-sm text-zinc-700 group-hover:text-zinc-900 transition-colors font-light tracking-wide">
                             {option.label}
                           </span>
                         </div>
-                        <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors flex-shrink-0" />
+                        <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-900 transition-colors flex-shrink-0" />
                       </div>
                     </motion.button>
                   ))}
@@ -455,7 +455,7 @@ export default function EmotionDiagnostic({ isOpen, onClose, source = 'navbar' }
                 {currentQuestion > 0 && (
                   <button
                     onClick={goBack}
-                    className="mt-8 flex items-center gap-2 text-zinc-500 hover:text-white transition-colors border border-zinc-700/30 hover:border-zinc-500 py-3 px-5 text-[10px] uppercase tracking-[0.2em] font-light"
+                    className="mt-8 flex items-center gap-2 text-zinc-700 hover:text-zinc-900 transition-colors border border-zinc-300 hover:border-zinc-500 py-3 px-5 text-[10px] uppercase tracking-[0.2em] font-light"
                     data-cursor="BACK"
                   >
                     <ArrowLeft className="w-3 h-3" />

@@ -35,7 +35,7 @@ export default function ContactPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* Contact Form */}
         <div className="py-12 lg:py-16">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
@@ -45,7 +45,7 @@ export default function ContactPage() {
                 <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
                   Get_In_Touch
                 </div>
-                <h1 className="text-4xl lg:text-5xl font-light text-white tracking-tight mb-8 leading-tight">
+                <h1 className="text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-8 leading-tight">
                   Contact Us
                 </h1>
 
@@ -59,7 +59,7 @@ export default function ContactPage() {
                       name="inquiryType"
                       value={formData.inquiryType}
                       onChange={handleInputChange}
-                      className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white focus:border-zinc-500 focus:outline-none transition-all duration-300"
+                      className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 focus:border-zinc-500 focus:outline-none transition-all duration-300"
                     >
                       <option value="general">General_Inquiry</option>
                       <option value="product">Product_Information</option>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={handleInputChange}
                         placeholder="Your name"
-                        className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
+                        className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
                         required
                       />
                     </div>
@@ -97,7 +97,7 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="your@email.com"
-                        className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
+                        className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
                         required
                       />
                     </div>
@@ -114,7 +114,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleInputChange}
                       placeholder="What's this about?"
-                      className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
+                      className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
                       required
                     />
                   </div>
@@ -130,7 +130,7 @@ export default function ContactPage() {
                       onChange={handleInputChange}
                       placeholder="Your message..."
                       rows={8}
-                      className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300 resize-none"
+                      className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300 resize-none"
                       required
                     />
                   </div>
@@ -139,14 +139,14 @@ export default function ContactPage() {
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button
                       type="submit"
-                      className="bg-white text-black py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
+                      className="bg-zinc-900 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
                     >
                       Send Message
                     </button>
                     <button
                       type="reset"
                       onClick={() => setFormData({ name: '', email: '', subject: '', message: '', inquiryType: 'general' })}
-                      className="border border-zinc-700/30 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
+                      className="border border-zinc-300 text-zinc-900 py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
                     >
                       Clear Form
                     </button>
@@ -192,10 +192,10 @@ export default function ContactPage() {
                     >
                       <div className="flex items-start gap-4">
                         <div className="mt-1">
-                          <contact.icon className="w-5 h-5 text-white" />
+                          <contact.icon className="w-5 h-5 text-zinc-900" />
                         </div>
                         <div>
-                          <div className="text-xs text-white mb-2 uppercase tracking-wide font-light">
+                          <div className="text-xs text-zinc-900 mb-2 uppercase tracking-wide font-light">
                             {contact.title}
                           </div>
                           <div className="text-xs text-zinc-500 tracking-wide">
@@ -215,19 +215,19 @@ export default function ContactPage() {
         <div className="py-12 lg:py-16 border-t border-zinc-900/50">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
             <div className="max-w-2xl">
-              <h2 className="text-3xl lg:text-4xl font-light text-white mb-8 leading-tight tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-8 leading-tight tracking-tight">
                 While you wait, explore the collection
               </h2>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/collections"
-                  className="inline-flex bg-white text-black py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
+                  className="inline-flex bg-zinc-900 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300"
                 >
                   Shop Now
                 </Link>
                 <Link
                   href="/about"
-                  className="inline-flex border border-zinc-700/30 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
+                  className="inline-flex border border-zinc-300 text-zinc-900 py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:border-zinc-500 transition-all duration-300"
                 >
                   About Us
                 </Link>

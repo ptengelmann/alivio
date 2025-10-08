@@ -112,7 +112,7 @@ export default function AdminDashboard() {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center pt-20">
+        <div className="min-h-screen bg-[#FAF8F5] text-zinc-900 flex items-center justify-center pt-20">
           <div className="text-center">
             <div className="text-[10px] text-zinc-500 tracking-[0.3em] uppercase animate-pulse">
               Loading_Dashboard
@@ -132,14 +132,14 @@ export default function AdminDashboard() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* Header */}
         <div className="py-12 lg:py-16 border-b border-zinc-900/50">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
             <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
               Admin_Dashboard
             </div>
-            <h1 className="text-5xl lg:text-6xl font-light text-white tracking-tight mb-12">
+            <h1 className="text-5xl lg:text-6xl font-light text-zinc-900 tracking-tight mb-12">
               Product Management
             </h1>
 
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                   className={`px-6 py-2.5 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-all ${
                     activeTab === tab.id
                       ? 'bg-white text-black'
-                      : 'border border-zinc-700/50 text-zinc-500 hover:text-white hover:border-zinc-400'
+                      : 'border border-zinc-700/50 text-zinc-500 hover:text-zinc-900 hover:border-zinc-400'
                   }`}
                 >
                   {tab.label}
@@ -194,7 +194,7 @@ export default function AdminDashboard() {
                       transition={{ delay: index * 0.1 }}
                     >
                       <stat.icon className="w-5 h-5 text-zinc-600 mb-4" />
-                      <div className="text-3xl font-light text-white mb-2">{stat.value}</div>
+                      <div className="text-3xl font-light text-zinc-900 mb-2">{stat.value}</div>
                       <div className="text-[9px] text-zinc-500 uppercase tracking-[0.2em]">{stat.label}</div>
                     </motion.div>
                   ))}
@@ -206,8 +206,8 @@ export default function AdminDashboard() {
                     onClick={() => setShowCreateModal(true)}
                     className="border border-zinc-700/30 p-8 text-left hover:border-zinc-500 transition-all group"
                   >
-                    <Plus className="w-5 h-5 text-white mb-4" />
-                    <div className="text-sm text-white mb-2 uppercase tracking-wide font-light">Add_Product</div>
+                    <Plus className="w-5 h-5 text-zinc-900 mb-4" />
+                    <div className="text-sm text-zinc-900 mb-2 uppercase tracking-wide font-light">Add_Product</div>
                     <div className="text-[10px] text-zinc-500 tracking-wide">Create new product</div>
                   </button>
 
@@ -215,8 +215,8 @@ export default function AdminDashboard() {
                     onClick={() => setShowCollectionModal(true)}
                     className="border border-zinc-700/30 p-8 text-left hover:border-zinc-500 transition-all group"
                   >
-                    <Grid3x3 className="w-5 h-5 text-white mb-4" />
-                    <div className="text-sm text-white mb-2 uppercase tracking-wide font-light">Create_Collection</div>
+                    <Grid3x3 className="w-5 h-5 text-zinc-900 mb-4" />
+                    <div className="text-sm text-zinc-900 mb-2 uppercase tracking-wide font-light">Create_Collection</div>
                     <div className="text-[10px] text-zinc-500 tracking-wide">Organize products</div>
                   </button>
 
@@ -224,8 +224,8 @@ export default function AdminDashboard() {
                     onClick={() => setActiveTab('analytics')}
                     className="border border-zinc-700/30 p-8 text-left hover:border-zinc-500 transition-all group"
                   >
-                    <BarChart3 className="w-5 h-5 text-white mb-4" />
-                    <div className="text-sm text-white mb-2 uppercase tracking-wide font-light">View_Analytics</div>
+                    <BarChart3 className="w-5 h-5 text-zinc-900 mb-4" />
+                    <div className="text-sm text-zinc-900 mb-2 uppercase tracking-wide font-light">View_Analytics</div>
                     <div className="text-[10px] text-zinc-500 tracking-wide">Track performance</div>
                   </button>
                 </div>
@@ -252,14 +252,14 @@ export default function AdminDashboard() {
                         placeholder="Search products..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-transparent border border-zinc-700/30 pl-12 pr-4 py-3 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-colors"
+                        className="w-full bg-transparent border border-zinc-700/30 pl-12 pr-4 py-3 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
                   <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
-                    className="bg-transparent border border-zinc-700/30 px-4 py-3 text-xs text-white focus:border-zinc-500 focus:outline-none"
+                    className="bg-transparent border border-zinc-700/30 px-4 py-3 text-xs text-zinc-900 focus:border-zinc-500 focus:outline-none"
                   >
                     <option value="all">All Status</option>
                     <option value="active">Published</option>
@@ -296,26 +296,26 @@ export default function AdminDashboard() {
                           </div>
                         )}
                         <div className={`absolute top-3 left-3 px-2 py-1 text-[8px] tracking-wider uppercase ${
-                          product.status === 'active' ? 'bg-green-500 text-white' :
+                          product.status === 'active' ? 'bg-green-500 text-zinc-900' :
                           product.status === 'draft' ? 'bg-yellow-500 text-black' :
-                          'bg-gray-500 text-white'
+                          'bg-gray-500 text-zinc-900'
                         }`}>
                           {product.status}
                         </div>
                       </div>
 
                       <div className="p-4">
-                        <h3 className="text-xs font-light text-white mb-2 uppercase tracking-wide truncate">
+                        <h3 className="text-xs font-light text-zinc-900 mb-2 uppercase tracking-wide truncate">
                           {product.title}
                         </h3>
                         <div className="text-[10px] text-zinc-500 mb-3 tracking-wider">
                           {formatPrice(product.variants?.[0]?.price || 0)}
                         </div>
                         <div className="flex gap-2">
-                          <button className="flex-1 border border-zinc-700/30 text-white py-2 text-[9px] uppercase tracking-wider hover:border-zinc-500 transition-colors">
+                          <button className="flex-1 border border-zinc-700/30 text-zinc-900 py-2 text-[9px] uppercase tracking-wider hover:border-zinc-500 transition-colors">
                             Edit
                           </button>
-                          <button className="border border-zinc-700/30 text-white px-3 hover:border-zinc-500 transition-colors">
+                          <button className="border border-zinc-700/30 text-zinc-900 px-3 hover:border-zinc-500 transition-colors">
                             <Eye className="w-3 h-3" />
                           </button>
                         </div>
@@ -365,11 +365,11 @@ export default function AdminDashboard() {
                       transition={{ delay: index * 0.1 }}
                     >
                       <Grid3x3 className="w-5 h-5 text-zinc-600 mb-4" />
-                      <h3 className="text-sm font-light text-white mb-2 uppercase tracking-wide">{collection.title}</h3>
+                      <h3 className="text-sm font-light text-zinc-900 mb-2 uppercase tracking-wide">{collection.title}</h3>
                       <div className="text-[10px] text-zinc-500 mb-4 tracking-wider">
                         {collection.products_count} products
                       </div>
-                      <button className="border border-zinc-700/30 text-white py-2 px-4 text-[9px] uppercase tracking-wider hover:border-zinc-500 transition-colors w-full">
+                      <button className="border border-zinc-700/30 text-zinc-900 py-2 px-4 text-[9px] uppercase tracking-wider hover:border-zinc-500 transition-colors w-full">
                         Edit
                       </button>
                     </motion.div>

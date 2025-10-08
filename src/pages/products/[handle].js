@@ -129,15 +129,15 @@ export default function ProductPage({ product }) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#FAF8F5] text-zinc-900 flex items-center justify-center">
         <div className="text-center px-6">
-          <h1 className="text-4xl lg:text-5xl font-light text-white mb-4 tracking-tight">
+          <h1 className="text-4xl lg:text-5xl font-light text-zinc-900 mb-4 tracking-tight">
             Product Not Found
           </h1>
-          <p className="text-zinc-500 text-sm tracking-wide mb-8">
+          <p className="text-zinc-800 text-sm tracking-wide mb-8">
             The requested item is not in our database.
           </p>
-          <Link href="/collections" className="inline-block border border-white text-white py-3 px-10 text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
+          <Link href="/collections" className="inline-block border border-white text-zinc-900 py-3 px-10 text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">
             Return to Shop
           </Link>
         </div>
@@ -157,19 +157,19 @@ export default function ProductPage({ product }) {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* Minimal Navigation Header */}
-        <div className="py-6 border-b border-zinc-900/50">
+        <div className="py-6 border-b border-zinc-200">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12 flex justify-between items-center">
             <Link
               href={collectionHandle ? `/collections/${collectionHandle}` : '/collections'}
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-800 hover:text-zinc-900 transition-colors"
               data-cursor="BACK"
             >
               <ArrowLeft className="w-3 h-3" />
               Back
             </Link>
-            <div className="flex items-center gap-3 text-[9px] tracking-[0.3em] text-zinc-600 uppercase">
+            <div className="flex items-center gap-3 text-[9px] tracking-[0.3em] text-zinc-800 uppercase">
               {emotion?.contraband?.classification && (
                 <span style={{ color: emotion.colors.accent }}>
                   {emotion.contraband.classification}
@@ -179,13 +179,13 @@ export default function ProductPage({ product }) {
           </div>
         </div>
 
-        <div className="max-w-[1600px] mx-auto px-8 lg:px-12 py-12 lg:py-16">
+        <div className="max-w-[1800px] mx-auto px-6 lg:px-8 py-8 lg:py-12">
           {/* Product content */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Product images */}
-            <div className="lg:sticky lg:top-24 lg:self-start space-y-4">
-              {/* Main selected image */}
-              <div className="aspect-[4/5] bg-zinc-900/20 relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            {/* Product images - 7 columns */}
+            <div className="lg:col-span-7 space-y-3">
+              {/* Main selected image - 1:1 aspect ratio */}
+              <div className="aspect-square bg-zinc-100 relative overflow-hidden">
                   {allImages[selectedImage]?.node?.url ? (
                     <>
                       <img
@@ -193,12 +193,19 @@ export default function ProductPage({ product }) {
                         alt={allImages[selectedImage].node.altText || product.title}
                         className="w-full h-full object-cover"
                       />
+
+                      {/* Image counter overlay */}
+                      {allImages.length > 1 && (
+                        <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-zinc-900/80 backdrop-blur-sm text-white text-[10px] tracking-wider">
+                          {selectedImage + 1} / {allImages.length}
+                        </div>
+                      )}
                     </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-zinc-900/10">
                       <div className="text-center">
-                        <div className="text-6xl font-light text-zinc-800 mb-4">
-                          {product.title.charAt(0)}
+                        <div className="text-8xl font-light text-zinc-800 mb-4">
+                          ALV
                         </div>
                       </div>
                     </div>
@@ -207,13 +214,15 @@ export default function ProductPage({ product }) {
 
               {/* Image grid thumbnails */}
               {allImages.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-5 gap-2">
                   {allImages.map((imageEdge, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`aspect-square relative overflow-hidden group transition-opacity ${
-                        selectedImage === index ? 'opacity-100' : 'opacity-50 hover:opacity-100'
+                      className={`aspect-square relative overflow-hidden group transition-all border-2 ${
+                        selectedImage === index
+                          ? 'opacity-100 border-zinc-900'
+                          : 'opacity-60 hover:opacity-100 border-transparent hover:border-zinc-300'
                       }`}
                       data-cursor="VIEW"
                     >
@@ -230,57 +239,92 @@ export default function ProductPage({ product }) {
                           </div>
                         </div>
                       )}
-                      {selectedImage === index && (
-                        <div className="absolute inset-0 border-2 border-white" />
-                      )}
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Product info */}
-            <div>
-              {/* Product code */}
-              <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-8 uppercase">
-                {emotion?.contraband?.batchNumber?.slice(-7) || product.handle.slice(0,7)} • {emotion?.contraband?.classification || 'Classified'}
-              </div>
+            {/* Product info - 5 columns */}
+            <div className="lg:col-span-5 lg:sticky lg:top-24 lg:self-start">
+              {/* Emotion badge */}
+              {emotion && (
+                <div
+                  className="inline-flex px-3 py-1.5 text-[9px] tracking-[0.3em] uppercase mb-6"
+                  style={{
+                    backgroundColor: `${emotion.colors.primary}15`,
+                    color: emotion.colors.accent,
+                    border: `1px solid ${emotion.colors.accent}40`
+                  }}
+                >
+                  {emotion.name}
+                </div>
+              )}
 
               {/* Title */}
-              <h1 className="text-4xl lg:text-5xl font-light text-white mb-6 leading-tight tracking-tight uppercase">
+              <h1 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-4 leading-tight tracking-tight">
                 {product.title}
               </h1>
 
+              {/* Product code */}
+              <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-8 uppercase font-mono">
+                {emotion?.contraband?.batchNumber?.slice(-7) || product.handle.slice(0,7).toUpperCase()} • {emotion?.contraband?.classification || 'CLASSIFIED'}
+              </div>
+
               {/* Price */}
-              <div className="text-xl text-zinc-400 mb-10 tracking-wide">
+              <div className="text-2xl text-zinc-900 mb-8 tracking-wide font-light">
                 {selectedVariant
                   ? formatMoney(selectedVariant.price.amount, selectedVariant.price.currencyCode)
                   : formatMoney(product.priceRange.minVariantPrice.amount, product.priceRange.minVariantPrice.currencyCode)
                 }
               </div>
 
-              {/* Availability */}
-              <div className="mb-10 pb-10 border-b border-zinc-900/50">
-                <div className="text-[10px] tracking-wider uppercase space-y-2">
+              {/* Description */}
+              {product.description && (
+                <div className="mb-8 pb-8 border-b border-zinc-200">
+                  <div
+                    className="text-sm text-zinc-700 leading-relaxed tracking-wide prose prose-sm max-w-none prose-p:mb-3 prose-strong:text-zinc-900 prose-strong:font-medium prose-ul:mt-2 prose-li:text-zinc-700"
+                    dangerouslySetInnerHTML={{ __html: product.description }}
+                  />
+                </div>
+              )}
+
+              {/* Specs Grid */}
+              <div className="mb-8 pb-8 border-b border-zinc-200">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    {selectedVariant?.availableForSale ? (
-                      <span className="text-green-500/70">In Stock</span>
-                    ) : (
-                      <span className="text-red-500/70">Out of Stock</span>
-                    )}
+                    <div className="text-[9px] tracking-[0.3em] text-zinc-800 uppercase mb-2">Status</div>
+                    <div className="text-xs font-mono">
+                      {selectedVariant?.availableForSale ? (
+                        <span className="text-green-600">IN STOCK</span>
+                      ) : (
+                        <span className="text-red-600">OUT OF STOCK</span>
+                      )}
+                    </div>
                   </div>
                   {emotion && (
-                    <div className="text-zinc-600">
-                      PURITY: {emotion.contraband?.purity || '99.9%'}
-                    </div>
+                    <>
+                      <div>
+                        <div className="text-[9px] tracking-[0.3em] text-zinc-800 uppercase mb-2">Purity</div>
+                        <div className="text-xs font-mono text-zinc-900">{emotion.contraband?.purity || '99.9%'}</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] tracking-[0.3em] text-zinc-800 uppercase mb-2">Batch</div>
+                        <div className="text-xs font-mono text-zinc-900">{emotion.contraband?.batchNumber?.slice(-4) || '0001'}</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] tracking-[0.3em] text-zinc-800 uppercase mb-2">Type</div>
+                        <div className="text-xs font-mono text-zinc-900">{emotion.contraband?.classification || 'CLASS-A'}</div>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
 
               {/* Product options */}
               {product.options?.map((option) => (
-                <div key={option.id} className="mb-6">
-                  <div className="font-mono text-[11px] text-zinc-500 mb-3 uppercase">
+                <div key={option.id} className="mb-8">
+                  <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-3 uppercase">
                     {option.name}
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -296,12 +340,12 @@ export default function ProductPage({ product }) {
                           key={value}
                           onClick={() => handleOptionChange(option.name, value)}
                           disabled={!isAvailable}
-                          className={`px-4 py-3 border font-mono text-[11px] transition-colors uppercase ${
+                          className={`px-5 py-3 border text-[10px] transition-all font-mono tracking-wider ${
                             selectedOptions[option.name] === value
-                              ? 'border-white bg-white text-black'
+                              ? 'border-zinc-900 bg-zinc-900 text-white'
                               : isAvailable
-                              ? 'border-zinc-800 text-white hover:border-zinc-600'
-                              : 'border-zinc-900 text-zinc-700 cursor-not-allowed'
+                              ? 'border-zinc-300 text-zinc-900 hover:border-zinc-900'
+                              : 'border-zinc-200 text-zinc-400 cursor-not-allowed opacity-40'
                           }`}
                           data-cursor={isAvailable ? "SELECT" : undefined}
                         >
@@ -313,103 +357,83 @@ export default function ProductPage({ product }) {
                 </div>
               ))}
 
-              {/* Quantity selector */}
-              <div className="mb-8">
-                <div className="font-mono text-[11px] text-zinc-500 mb-3 uppercase">QUANTITY</div>
-                <div className="flex items-center border border-zinc-800 w-fit">
+              {/* Quantity and Add to Cart in grid */}
+              <div className="grid grid-cols-3 gap-3 mb-10">
+                {/* Quantity selector */}
+                <div className="col-span-1">
+                  <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-3 uppercase">Qty</div>
+                  <div className="flex items-center border border-zinc-300 h-12">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="flex-1 h-full flex items-center justify-center hover:bg-zinc-100 transition-colors"
+                      data-cursor="MINUS"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                    <span className="flex-1 text-center font-mono text-sm">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="flex-1 h-full flex items-center justify-center hover:bg-zinc-100 transition-colors"
+                      data-cursor="PLUS"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Add to cart */}
+                <div className="col-span-2">
+                  <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-3 uppercase opacity-0">Action</div>
                   <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-12 h-12 flex items-center justify-center hover:bg-zinc-900 transition-colors"
-                    data-cursor="MINUS"
+                    className="w-full h-12 bg-zinc-900 text-white font-mono text-[10px] tracking-[0.2em] hover:bg-zinc-700 transition-all uppercase disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed"
+                    disabled={!selectedVariant?.availableForSale}
+                    data-cursor={selectedVariant?.availableForSale ? "ACQUIRE" : undefined}
                   >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-16 text-center font-mono text-sm">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-12 h-12 flex items-center justify-center hover:bg-zinc-900 transition-colors"
-                    data-cursor="PLUS"
-                  >
-                    <Plus className="w-4 h-4" />
+                    {selectedVariant?.availableForSale ? 'Add to Cart' : 'Out of Stock'}
                   </button>
                 </div>
               </div>
 
-              {/* Add to cart */}
-              <button
-                className="w-full bg-white text-black py-4 px-6 font-mono font-bold text-sm tracking-wider hover:bg-zinc-200 transition-colors mb-8 uppercase disabled:bg-zinc-900 disabled:text-zinc-600 disabled:cursor-not-allowed"
-                disabled={!selectedVariant?.availableForSale}
-                data-cursor={selectedVariant?.availableForSale ? "ACQUIRE" : undefined}
-              >
-                {selectedVariant?.availableForSale ? 'ACQUIRE_ITEM' : 'OUT_OF_STOCK'}
-              </button>
-
-              {/* Product details */}
-              <div className="space-y-0 border-t border-zinc-900">
-                {/* Description */}
-                {product.description && (
-                  <div className="border-b border-zinc-900">
-                    <button
-                      onClick={() => setExpandedSection(expandedSection === 'description' ? null : 'description')}
-                      className="w-full p-4 text-left flex justify-between items-center hover:bg-zinc-950 transition-colors"
-                      data-cursor="EXPAND"
-                    >
-                      <span className="font-mono text-[11px] text-white uppercase">PRODUCT_DETAILS</span>
-                      {expandedSection === 'description' ? (
-                        <ChevronUp className="w-4 h-4 text-zinc-500" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-zinc-500" />
-                      )}
-                    </button>
-                    {expandedSection === 'description' && (
-                      <div className="p-4 border-t border-zinc-900">
-                        <div
-                          className="text-sm text-zinc-400 leading-relaxed"
-                          dangerouslySetInnerHTML={{ __html: product.description }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                )}
-
+              {/* Additional Info Accordions */}
+              <div className="space-y-0 border-t border-zinc-200">
                 {/* Specifications */}
-                <div className="border-b border-zinc-900">
+                <div className="border-b border-zinc-200">
                   <button
                     onClick={() => setExpandedSection(expandedSection === 'specs' ? null : 'specs')}
-                    className="w-full p-4 text-left flex justify-between items-center hover:bg-zinc-950 transition-colors"
+                    className="w-full py-4 text-left flex justify-between items-center hover:bg-zinc-50 transition-colors"
                     data-cursor="EXPAND"
                   >
-                    <span className="font-mono text-[11px] text-white uppercase">SPECIFICATIONS</span>
+                    <span className="font-mono text-[11px] text-zinc-900 uppercase">SPECIFICATIONS</span>
                     {expandedSection === 'specs' ? (
-                      <ChevronUp className="w-4 h-4 text-zinc-500" />
+                      <ChevronUp className="w-4 h-4 text-zinc-800" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-zinc-500" />
+                      <ChevronDown className="w-4 h-4 text-zinc-800" />
                     )}
                   </button>
                   {expandedSection === 'specs' && (
-                    <div className="p-4 border-t border-zinc-900">
-                      <div className="space-y-2">
-                        <div className="flex justify-between py-2 border-b border-zinc-900">
-                          <span className="text-[11px] font-mono text-zinc-500 uppercase">MATERIAL</span>
-                          <span className="text-[11px] font-mono text-white">100% COTTON</span>
+                    <div className="py-4 border-t border-zinc-200 bg-zinc-50/50">
+                      <div className="space-y-3 px-1">
+                        <div className="flex justify-between py-2 border-b border-zinc-200">
+                          <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-wider">Material</span>
+                          <span className="text-[10px] font-mono text-zinc-900">100% Cotton</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-zinc-900">
-                          <span className="text-[11px] font-mono text-zinc-500 uppercase">WEIGHT</span>
-                          <span className="text-[11px] font-mono text-white">240GSM</span>
+                        <div className="flex justify-between py-2 border-b border-zinc-200">
+                          <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-wider">Weight</span>
+                          <span className="text-[10px] font-mono text-zinc-900">240GSM</span>
                         </div>
-                        <div className="flex justify-between py-2 border-b border-zinc-900">
-                          <span className="text-[11px] font-mono text-zinc-500 uppercase">FIT</span>
-                          <span className="text-[11px] font-mono text-white">OVERSIZED</span>
+                        <div className="flex justify-between py-2 border-b border-zinc-200">
+                          <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-wider">Fit</span>
+                          <span className="text-[10px] font-mono text-zinc-900">Oversized</span>
                         </div>
                         {emotion && (
                           <>
-                            <div className="flex justify-between py-2 border-b border-zinc-900">
-                              <span className="text-[11px] font-mono text-zinc-500 uppercase">BATCH_NUMBER</span>
-                              <span className="text-[11px] font-mono text-white">{emotion.contraband?.batchNumber || 'N/A'}</span>
+                            <div className="flex justify-between py-2 border-b border-zinc-200">
+                              <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-wider">Batch Number</span>
+                              <span className="text-[10px] font-mono text-zinc-900">{emotion.contraband?.batchNumber || 'N/A'}</span>
                             </div>
-                            <div className="flex justify-between py-2 border-b border-zinc-900">
-                              <span className="text-[11px] font-mono text-zinc-500 uppercase">CLASSIFICATION</span>
-                              <span className="text-[11px] font-mono text-white">{emotion.contraband?.classification || 'CLASSIFIED'}</span>
+                            <div className="flex justify-between py-2">
+                              <span className="text-[10px] font-mono text-zinc-700 uppercase tracking-wider">Classification</span>
+                              <span className="text-[10px] font-mono text-zinc-900">{emotion.contraband?.classification || 'CLASSIFIED'}</span>
                             </div>
                           </>
                         )}
@@ -419,22 +443,22 @@ export default function ProductPage({ product }) {
                 </div>
 
                 {/* Shipping */}
-                <div className="border-b border-zinc-900">
+                <div className="border-b border-zinc-200">
                   <button
                     onClick={() => setExpandedSection(expandedSection === 'shipping' ? null : 'shipping')}
-                    className="w-full p-4 text-left flex justify-between items-center hover:bg-zinc-950 transition-colors"
+                    className="w-full p-4 text-left flex justify-between items-center hover:bg-zinc-50 transition-colors"
                     data-cursor="EXPAND"
                   >
-                    <span className="font-mono text-[11px] text-white uppercase">SHIPPING_RETURNS</span>
+                    <span className="font-mono text-[11px] text-zinc-900 uppercase">SHIPPING_RETURNS</span>
                     {expandedSection === 'shipping' ? (
-                      <ChevronUp className="w-4 h-4 text-zinc-500" />
+                      <ChevronUp className="w-4 h-4 text-zinc-800" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-zinc-500" />
+                      <ChevronDown className="w-4 h-4 text-zinc-800" />
                     )}
                   </button>
                   {expandedSection === 'shipping' && (
-                    <div className="p-4 border-t border-zinc-900">
-                      <div className="text-sm text-zinc-400 leading-relaxed space-y-3 font-mono">
+                    <div className="p-4 border-t border-zinc-200">
+                      <div className="text-sm text-zinc-700 leading-relaxed space-y-3 font-mono">
                         <p>Secure shipping worldwide. All items authenticated before dispatch.</p>
                         <p>Tracking provided for monitoring chain of custody.</p>
                         <p>Returns accepted within 14 days of delivery. Item must remain sealed.</p>

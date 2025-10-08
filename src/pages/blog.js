@@ -97,14 +97,14 @@ export default function BlogPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* Header */}
         <div className="py-16 lg:py-24 border-b border-zinc-900/50">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
             <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
               Emotional_Database
             </div>
-            <h1 className="text-5xl lg:text-6xl font-light text-white tracking-tight mb-6">
+            <h1 className="text-5xl lg:text-6xl font-light text-zinc-900 tracking-tight mb-6">
               Journal
             </h1>
             <p className="text-xs text-zinc-400 leading-relaxed font-light tracking-wide max-w-xl">
@@ -114,7 +114,7 @@ export default function BlogPage() {
         </div>
 
         {/* Category Filter */}
-        <div className="sticky top-20 z-40 bg-[#0a0a0f]/95 backdrop-blur-sm border-b border-zinc-900/50">
+        <div className="sticky top-20 z-40 bg-[#FAF8F5]/95 backdrop-blur-sm border-b border-zinc-200">
           <div className="max-w-[1600px] mx-auto px-8 lg:px-12 py-6">
             <div className="flex items-center gap-3 overflow-x-auto">
               {CATEGORIES.map((category) => (
@@ -124,7 +124,7 @@ export default function BlogPage() {
                   className={`px-6 py-2.5 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 font-light ${
                     selectedCategory === category
                       ? 'bg-white text-black'
-                      : 'border border-zinc-700/50 text-zinc-500 hover:text-white hover:border-zinc-500'
+                      : 'border border-zinc-700/50 text-zinc-500 hover:text-zinc-900 hover:border-zinc-500'
                   }`}
                 >
                   {category}
@@ -165,7 +165,7 @@ export default function BlogPage() {
                       {featuredPost.category}
                     </div>
 
-                    <h2 className="text-3xl lg:text-4xl font-light text-white mb-6 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
+                    <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-6 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
                       {featuredPost.title}
                     </h2>
 
@@ -181,7 +181,7 @@ export default function BlogPage() {
                       <span>{featuredPost.readTime} read</span>
                     </div>
 
-                    <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white group-hover:gap-3 transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-900 group-hover:gap-3 transition-all duration-300">
                       Read Article
                       <ArrowRight className="w-3 h-3" />
                     </div>
@@ -234,14 +234,14 @@ export default function BlogPage() {
                           )}
 
                           {/* Category Badge */}
-                          <div className="absolute top-3 left-3 px-2.5 py-1 text-[8px] tracking-wider backdrop-blur-sm bg-[#0a0a0f]/80 border border-zinc-700/30 text-zinc-500 uppercase">
+                          <div className="absolute top-3 left-3 px-2.5 py-1 text-[8px] tracking-wider backdrop-blur-sm bg-[#FAF8F5]/80 border border-zinc-300 text-zinc-600 uppercase">
                             {post.category}
                           </div>
                         </div>
 
                         {/* Content */}
                         <div>
-                          <h3 className="text-lg font-light text-white mb-3 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
+                          <h3 className="text-lg font-light text-zinc-900 mb-3 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
                             {post.title}
                           </h3>
 

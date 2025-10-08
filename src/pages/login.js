@@ -54,7 +54,7 @@ export default function LoginPage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-[#0a0a0f] text-white pt-20 flex items-center">
+      <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20 flex items-center">
         <div className="w-full py-12 lg:py-16">
           <div className="max-w-[500px] mx-auto px-8 lg:px-12">
             <motion.div
@@ -62,17 +62,17 @@ export default function LoginPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
+              <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-6 uppercase">
                 Account_Access
               </div>
-              <h1 className="text-4xl lg:text-5xl font-light text-white tracking-tight mb-8 leading-tight">
+              <h1 className="text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-8 leading-tight">
                 Login
               </h1>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email */}
                 <div>
-                  <label className="block text-[10px] text-zinc-500 mb-3 uppercase tracking-wider">
+                  <label className="block text-[10px] text-zinc-800 mb-3 uppercase tracking-wider">
                     Email
                   </label>
                   <input
@@ -81,14 +81,14 @@ export default function LoginPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="your@email.com"
-                    className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
+                    className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300"
                     required
                   />
                 </div>
 
                 {/* Password */}
                 <div>
-                  <label className="block text-[10px] text-zinc-500 mb-3 uppercase tracking-wider">
+                  <label className="block text-[10px] text-zinc-800 mb-3 uppercase tracking-wider">
                     Password
                   </label>
                   <div className="relative">
@@ -98,13 +98,13 @@ export default function LoginPage() {
                       value={formData.password}
                       onChange={handleInputChange}
                       placeholder="Enter your password"
-                      className="w-full bg-transparent border border-zinc-700/30 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300 pr-12"
+                      className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-zinc-500 focus:outline-none transition-all duration-300 pr-12"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 text-zinc-800 hover:text-zinc-900 transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -113,13 +113,13 @@ export default function LoginPage() {
 
                 {/* Remember & Forgot */}
                 <div className="flex justify-between items-center text-xs">
-                  <label className="flex items-center gap-2 text-zinc-500 cursor-pointer">
+                  <label className="flex items-center gap-2 text-zinc-800 cursor-pointer">
                     <input type="checkbox" className="w-3 h-3 accent-white" />
                     <span className="tracking-wide">Remember me</span>
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-zinc-500 hover:text-white transition-colors tracking-wide"
+                    className="text-zinc-800 hover:text-zinc-900 transition-colors tracking-wide"
                   >
                     Forgot password?
                   </Link>
@@ -137,16 +137,16 @@ export default function LoginPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-white text-black py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-zinc-900 text-white py-4 px-10 text-[10px] uppercase tracking-[0.2em] font-light hover:bg-zinc-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Logging in...' : 'Login'}
                   </button>
 
                   <div className="text-center">
-                    <span className="text-zinc-500 text-xs tracking-wide">Don't have an account? </span>
+                    <span className="text-zinc-800 text-xs tracking-wide">Don't have an account? </span>
                     <Link
                       href="/register"
-                      className="text-white hover:text-zinc-300 transition-colors text-xs tracking-wide"
+                      className="text-zinc-900 hover:text-zinc-300 transition-colors text-xs tracking-wide"
                     >
                       Create account
                     </Link>

@@ -18,7 +18,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#0a0a0f] border-t border-zinc-900/50">
+    <footer className="bg-[#FAF8F5] border-t border-zinc-200">
       <div className="max-w-[1600px] mx-auto px-8 lg:px-12 py-16 lg:py-24">
         {/* Main footer content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
@@ -28,37 +28,37 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-8 bg-white" />
               <div className="flex flex-col">
-                <div className="font-black text-sm text-white leading-none mb-0.5">ALIVIO</div>
-                <div className="text-[9px] text-zinc-600 tracking-[0.2em] leading-none uppercase">Emotional_Contraband</div>
+                <div className="font-black text-sm text-zinc-900 leading-none mb-0.5">ALIVIO</div>
+                <div className="text-[9px] text-zinc-800 tracking-[0.2em] leading-none uppercase">Emotional_Contraband</div>
               </div>
             </div>
 
-            <div className="text-xs text-zinc-500 leading-relaxed mb-6 font-light tracking-wide">
+            <div className="text-xs text-zinc-700 leading-relaxed mb-6 font-light tracking-wide">
               Laboratory-grade streetwear. Two core emotions. Limited batch production.
             </div>
 
-            <div className="space-y-2 text-[10px] tracking-wider text-zinc-600 uppercase">
+            <div className="space-y-2 text-[10px] tracking-wider text-zinc-800 uppercase">
               <div className="flex justify-between py-1">
                 <span>Status</span>
                 <span className="text-green-500/70">Operational</span>
               </div>
               <div className="flex justify-between py-1">
                 <span>Collections</span>
-                <span className="text-white">{allEmotions.length.toString().padStart(2, '0')}</span>
+                <span className="text-zinc-900">{allEmotions.length.toString().padStart(2, '0')}</span>
               </div>
             </div>
           </div>
 
           {/* Collections */}
           <div>
-            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Collections</div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-6 uppercase">Collections</div>
 
             <div className="space-y-3">
               {allEmotions.map((emotion) => (
                 <Link
                   key={emotion.id}
                   href={`/collections/${emotion.id}`}
-                  className="block text-xs text-zinc-400 hover:text-white transition-colors uppercase tracking-wide"
+                  className="block text-xs text-zinc-700 hover:text-zinc-900 transition-colors uppercase tracking-wide"
                   data-cursor="COLLECTION"
                 >
                   {emotion.name}
@@ -67,7 +67,7 @@ export default function Footer() {
 
               <Link
                 href="/collections"
-                className="block text-xs text-zinc-500 hover:text-white transition-colors pt-3 border-t border-zinc-900/50 uppercase tracking-wide"
+                className="block text-xs text-zinc-700 hover:text-zinc-900 transition-colors pt-3 border-t border-zinc-200 uppercase tracking-wide"
                 data-cursor="VIEW"
               >
                 Shop All →
@@ -77,7 +77,7 @@ export default function Footer() {
 
           {/* Brand Links */}
           <div>
-            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Information</div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-6 uppercase">Information</div>
 
             <div className="space-y-3">
               {[
@@ -90,7 +90,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block text-xs text-zinc-400 hover:text-white transition-colors uppercase tracking-wide"
+                  className="block text-xs text-zinc-700 hover:text-zinc-900 transition-colors uppercase tracking-wide"
                 >
                   {link.label}
                 </Link>
@@ -100,9 +100,9 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">Newsletter</div>
+            <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-6 uppercase">Newsletter</div>
 
-            <div className="text-xs text-zinc-500 mb-6 leading-relaxed font-light tracking-wide">
+            <div className="text-xs text-zinc-700 mb-6 leading-relaxed font-light tracking-wide">
               New batch notifications and exclusive access.
             </div>
 
@@ -112,13 +112,13 @@ export default function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full bg-transparent border border-zinc-700/50 py-3 px-4 text-xs text-white placeholder-zinc-600 focus:border-white/50 focus:outline-none transition-colors tracking-wide"
+                className="w-full bg-transparent border border-zinc-300 py-3 px-4 text-xs text-zinc-900 placeholder-zinc-600 focus:border-white/50 focus:outline-none transition-colors tracking-wide"
                 required
               />
 
               <button
                 type="submit"
-                className="w-full bg-white text-black py-3 px-4 text-[10px] uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors font-medium"
+                className="w-full bg-zinc-900 text-white py-3 px-4 text-[10px] uppercase tracking-[0.2em] hover:bg-zinc-200 transition-colors font-medium"
                 data-cursor="SUBMIT"
               >
                 Subscribe
@@ -133,7 +133,7 @@ export default function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="text-[10px] text-zinc-500 hover:text-white transition-colors uppercase tracking-wider"
+                  className="text-[10px] text-zinc-700 hover:text-zinc-900 transition-colors uppercase tracking-wider"
                   data-cursor="SOCIAL"
                 >
                   {social.label}
@@ -144,8 +144,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-zinc-900/50">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-[10px] text-zinc-600 tracking-wider">
+        <div className="pt-8 border-t border-zinc-200">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-[10px] text-zinc-800 tracking-wider">
             <div className="uppercase">
               © {currentYear} Alívio. All rights reserved.
             </div>
