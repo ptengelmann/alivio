@@ -4,54 +4,60 @@ import Link from 'next/link';
 
 export default function HeroBanner({ openDiagnostic }) {
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative h-[100vh] w-full overflow-hidden" style={{ minHeight: '100vh', maxHeight: '100vh' }}>
       {/* Background Image with dark gradient overlay */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 w-full h-full">
         <img
           src="/hero.png"
           alt="Alívio Hero"
-          className="w-full h-full object-cover opacity-100"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-black/60 via-black/30 to-transparent pointer-events-none" />
       </div>
 
-      {/* Minimalist Text Overlay - Bottom Right */}
-      <div className="absolute bottom-0 right-0 p-12 lg:p-20 max-w-lg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-right"
-        >
-          <div className="text-[9px] tracking-[0.3em] text-white mb-6 uppercase font-medium">
-            Emotional_Contraband
-          </div>
-          <h1 className="text-5xl lg:text-6xl font-light text-white mb-6 leading-[0.95] tracking-tight">
-            Authenticated<br />
-            Emotional<br />
-            Contraband
-          </h1>
-          <p className="text-xs text-zinc-200 leading-relaxed mb-8 font-light tracking-wide">
-            Two core emotions. Limited batch production.<br />
-            London-based authentication.
-          </p>
-          <div className="flex flex-col gap-3 items-end">
-            <Link
-              href="/collections"
-              className="inline-flex bg-zinc-900 text-white px-10 py-4 text-[10px] uppercase tracking-[0.2em] hover:bg-zinc-700 transition-all font-medium"
-              data-cursor="SHOP"
-            >
-              Shop Now
-            </Link>
-            <button
-              onClick={() => openDiagnostic('hero')}
-              className="inline-flex text-zinc-900 px-10 py-4 text-[10px] uppercase tracking-[0.2em] hover:text-zinc-700 transition-all font-light border border-zinc-900 hover:border-zinc-700"
-              data-cursor="SCAN"
-            >
-              Find Your Emotion
-            </button>
-          </div>
-        </motion.div>
+      {/* Minimalist Text Overlay - Left Side */}
+      <div className="relative w-full h-full flex items-end justify-start p-6 sm:p-8 lg:p-12 xl:p-16">
+        <div className="max-w-[1400px] w-full">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="max-w-xl pb-8 sm:pb-12"
+          >
+            {/* Tag */}
+            <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-white/90 mb-3 sm:mb-4 uppercase font-medium">
+              Emotional_Contraband
+            </div>
+
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-white mb-3 sm:mb-4 leading-[1.1] tracking-tight">
+              Alívio™ | Authenticated Emotional Contraband
+            </h1>
+
+            {/* Description */}
+            <p className="text-xs sm:text-sm text-white/85 leading-relaxed mb-5 sm:mb-6 font-light tracking-wide">
+              Laboratory-grade streetwear. Launching with Euphoria and Rage—refined, batch-numbered, and authenticated. Limited production runs from Preston.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 sm:gap-4">
+              <Link
+                href="/collections"
+                className="inline-flex bg-white text-zinc-900 px-8 py-3 sm:px-10 sm:py-3.5 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] hover:bg-zinc-100 transition-all font-medium"
+                data-cursor="SHOP"
+              >
+                Shop Now
+              </Link>
+              <button
+                onClick={() => openDiagnostic('hero')}
+                className="inline-flex text-white px-8 py-3 sm:px-10 sm:py-3.5 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] hover:bg-white/10 transition-all font-light border border-white/40 hover:border-white/60"
+                data-cursor="SCAN"
+              >
+                Find Your Emotion
+              </button>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

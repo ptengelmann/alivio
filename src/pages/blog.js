@@ -16,7 +16,7 @@ const BLOG_POSTS = [
     date: '2025-01-15',
     category: 'Philosophy',
     readTime: '8 min',
-    image: '/hero.png',
+    image: '/blog.png',
     featured: true
   },
   {
@@ -27,7 +27,7 @@ const BLOG_POSTS = [
     date: '2025-01-10',
     category: 'Process',
     readTime: '6 min',
-    image: null,
+    image: '/bloggrid.png',
     featured: false
   },
   {
@@ -99,32 +99,32 @@ export default function BlogPage() {
 
       <main className="min-h-screen bg-[#FAF8F5] text-zinc-900 pt-20">
         {/* Header */}
-        <div className="py-16 lg:py-24 border-b border-zinc-900/50">
-          <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
-            <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-6 uppercase">
+        <div className="py-8 sm:py-12 lg:py-16 border-b border-zinc-200">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-zinc-600 mb-3 sm:mb-4 uppercase">
               Emotional_Database
             </div>
-            <h1 className="text-5xl lg:text-6xl font-light text-zinc-900 tracking-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-3 sm:mb-4">
               Journal
             </h1>
-            <p className="text-xs text-zinc-400 leading-relaxed font-light tracking-wide max-w-xl">
-              Thoughts on design, production, and the architecture of emotion. Laboratory notes from the Alívio archive.
+            <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-light tracking-wide max-w-xl">
+              Thoughts on design, production, and the architecture of emotion.
             </p>
           </div>
         </div>
 
         {/* Category Filter */}
         <div className="sticky top-20 z-40 bg-[#FAF8F5]/95 backdrop-blur-sm border-b border-zinc-200">
-          <div className="max-w-[1600px] mx-auto px-8 lg:px-12 py-6">
-            <div className="flex items-center gap-3 overflow-x-auto">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
               {CATEGORIES.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-6 py-2.5 text-[10px] uppercase tracking-[0.2em] whitespace-nowrap transition-all duration-300 font-light ${
+                  className={`px-4 sm:px-5 py-2 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] whitespace-nowrap transition-all duration-300 font-light ${
                     selectedCategory === category
-                      ? 'bg-white text-black'
-                      : 'border border-zinc-700/50 text-zinc-500 hover:text-zinc-900 hover:border-zinc-500'
+                      ? 'bg-zinc-900 text-white'
+                      : 'border border-zinc-300 text-zinc-700 hover:text-zinc-900 hover:border-zinc-500'
                   }`}
                 >
                   {category}
@@ -136,52 +136,52 @@ export default function BlogPage() {
 
         {/* Featured Post */}
         {selectedCategory === 'All' && featuredPost && (
-          <div className="py-16 lg:py-24 border-b border-zinc-900/50">
-            <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
-              <div className="text-[9px] tracking-[0.3em] text-zinc-600 mb-10 uppercase">
+          <div className="py-8 sm:py-12 lg:py-16 border-b border-zinc-200">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-zinc-600 mb-6 sm:mb-8 uppercase">
                 Featured
               </div>
 
               <Link href={`/blog/${featuredPost.slug}`} className="group">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
                   {/* Image */}
-                  <div className="aspect-square overflow-hidden flex items-center justify-center">
+                  <div className="aspect-[4/3] lg:aspect-square overflow-hidden bg-zinc-100">
                     {featuredPost.image ? (
                       <img
                         src={featuredPost.image}
                         alt={featuredPost.title}
-                        className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-zinc-900/20">
-                        <div className="text-6xl font-light text-zinc-800">A</div>
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="text-6xl font-light text-zinc-300">ALV</div>
                       </div>
                     )}
                   </div>
 
                   {/* Content */}
                   <div className="flex flex-col justify-center">
-                    <div className="inline-block px-3 py-1.5 text-[8px] tracking-wider backdrop-blur-sm mb-6 border border-zinc-700/30 text-zinc-500 uppercase w-fit">
+                    <div className="inline-block px-2.5 py-1 text-[8px] tracking-wider mb-4 border border-zinc-300 text-zinc-600 uppercase w-fit">
                       {featuredPost.category}
                     </div>
 
-                    <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-6 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-zinc-900 mb-3 sm:mb-4 leading-tight tracking-tight group-hover:text-zinc-700 transition-colors duration-300">
                       {featuredPost.title}
                     </h2>
 
-                    <p className="text-xs text-zinc-400 leading-relaxed font-light tracking-wide mb-8">
+                    <p className="text-xs sm:text-sm text-zinc-700 leading-relaxed font-light tracking-wide mb-4 sm:mb-6">
                       {featuredPost.excerpt}
                     </p>
 
-                    <div className="flex items-center gap-6 text-[10px] text-zinc-600 uppercase tracking-wider mb-8">
+                    <div className="flex items-center gap-4 text-[9px] sm:text-[10px] text-zinc-600 uppercase tracking-wider mb-4 sm:mb-6">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-3 h-3" />
                         <span>{new Date(featuredPost.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                       </div>
-                      <span>{featuredPost.readTime} read</span>
+                      <span>{featuredPost.readTime}</span>
                     </div>
 
-                    <div className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-zinc-900 group-hover:gap-3 transition-all duration-300">
+                    <div className="inline-flex items-center gap-2 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-zinc-900 group-hover:gap-3 transition-all duration-300 border-b border-zinc-300 pb-1 w-fit">
                       Read Article
                       <ArrowRight className="w-3 h-3" />
                     </div>
@@ -193,10 +193,10 @@ export default function BlogPage() {
         )}
 
         {/* Posts Grid */}
-        <div className="py-16 lg:py-24">
-          <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
+        <div className="py-8 sm:py-12 lg:py-16">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             {regularPosts.length === 0 ? (
-              <div className="text-center py-24">
+              <div className="text-center py-16">
                 <div className="text-zinc-600 text-xs uppercase tracking-wider font-light mb-2">
                   No Articles Found
                 </div>
@@ -206,11 +206,11 @@ export default function BlogPage() {
               </div>
             ) : (
               <>
-                <div className="mb-10 text-[10px] text-zinc-600 uppercase tracking-wider">
+                <div className="mb-6 sm:mb-8 text-[9px] sm:text-[10px] text-zinc-600 uppercase tracking-wider">
                   {regularPosts.length} {regularPosts.length === 1 ? 'Article' : 'Articles'}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                   {regularPosts.map((post, index) => (
                     <motion.div
                       key={post.id}
@@ -220,40 +220,41 @@ export default function BlogPage() {
                     >
                       <Link href={`/blog/${post.slug}`} className="group block">
                         {/* Image */}
-                        <div className="aspect-[4/3] bg-zinc-900/20 overflow-hidden mb-6 relative">
+                        <div className="aspect-[4/3] bg-zinc-100 overflow-hidden mb-4 relative">
                           {post.image ? (
                             <img
                               src={post.image}
                               alt={post.title}
-                              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <div className="text-5xl font-light text-zinc-800">A</div>
+                              <div className="text-5xl font-light text-zinc-300">ALV</div>
                             </div>
                           )}
 
                           {/* Category Badge */}
-                          <div className="absolute top-3 left-3 px-2.5 py-1 text-[8px] tracking-wider backdrop-blur-sm bg-[#FAF8F5]/80 border border-zinc-300 text-zinc-600 uppercase">
+                          <div className="absolute top-3 left-3 px-2 py-0.5 text-[8px] tracking-wider bg-white/90 border border-zinc-300 text-zinc-600 uppercase">
                             {post.category}
                           </div>
                         </div>
 
                         {/* Content */}
                         <div>
-                          <h3 className="text-lg font-light text-zinc-900 mb-3 leading-tight tracking-tight group-hover:text-zinc-300 transition-colors duration-300">
+                          <h3 className="text-base sm:text-lg font-light text-zinc-900 mb-2 leading-tight tracking-tight group-hover:text-zinc-700 transition-colors duration-300">
                             {post.title}
                           </h3>
 
-                          <p className="text-xs text-zinc-500 leading-relaxed font-light tracking-wide mb-4">
+                          <p className="text-xs text-zinc-700 leading-relaxed font-light tracking-wide mb-3">
                             {post.excerpt}
                           </p>
 
-                          <div className="flex items-center gap-4 text-[10px] text-zinc-600 uppercase tracking-wider">
-                            <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3 text-[9px] text-zinc-600 uppercase tracking-wider">
+                            <div className="flex items-center gap-1.5">
                               <Calendar className="w-3 h-3" />
                               <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                             </div>
+                            <span>·</span>
                             <span>{post.readTime}</span>
                           </div>
                         </div>

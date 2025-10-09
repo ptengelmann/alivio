@@ -56,7 +56,7 @@ export default function ProductCard({ product, emotion, index = 0 }) {
         data-cursor="VIEW"
       >
         {/* Product Image Container */}
-        <div className="aspect-square overflow-hidden mb-4 relative bg-zinc-50">
+        <div className="aspect-square overflow-hidden mb-3 relative bg-zinc-50">
           <AnimatePresence mode="wait">
             {allImages.length > 0 ? (
               <motion.img
@@ -124,12 +124,12 @@ export default function ProductCard({ product, emotion, index = 0 }) {
         </div>
 
         {/* Product Info - Minimal */}
-        <div className="space-y-1">
-          <h3 className="text-xs font-light text-zinc-900 leading-tight tracking-wide group-hover:text-zinc-700 transition-colors uppercase">
+        <div className="space-y-0.5">
+          <h3 className="text-[10px] font-light text-zinc-900 leading-tight tracking-wide group-hover:text-zinc-700 transition-colors uppercase">
             {product.title}
           </h3>
           <div className="flex items-center justify-between">
-            <div className="text-[10px] text-zinc-700 tracking-wider">
+            <div className="text-[9px] text-zinc-700 tracking-wider">
               {product.priceRange?.minVariantPrice?.amount
                 ? formatMoney(
                     product.priceRange.minVariantPrice.amount,

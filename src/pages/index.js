@@ -26,7 +26,7 @@ export default function Homepage({ featuredProducts, emotionsWithStats }) {
   };
 
   // Carousel navigation
-  const showcaseProducts = featuredProducts.slice(0, 5);
+  const showcaseProducts = featuredProducts.slice(0, 6);
   const nextProduct = () => {
     setCarouselIndex((prev) => (prev + 1) % showcaseProducts.length);
   };
@@ -56,99 +56,118 @@ export default function Homepage({ featuredProducts, emotionsWithStats }) {
           source="hero"
         />
 
-        {/* 2. LABORATORY PRODUCT SHOWCASE - Editorial Grid */}
-        <section className="py-16 lg:py-20 bg-[#FAF8F5]">
-          <div className="max-w-[1600px] mx-auto px-8 lg:px-12">
-            {/* Minimal Header */}
-            <div className="flex items-end justify-between mb-10">
+        {/* 2. LABORATORY PRODUCT SHOWCASE - Horizontal Carousel */}
+        <section className="py-6 sm:py-8 lg:py-12 bg-[#FAF8F5]">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Header with Navigation */}
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div>
-                <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-4 uppercase">
+                <div className="text-[7px] sm:text-[8px] tracking-[0.35em] text-zinc-600 mb-1.5 sm:mb-2 uppercase">
                   Latest_Batch
                 </div>
-                <h2 className="text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-light text-zinc-900 tracking-tight">
                   Featured Items
                 </h2>
               </div>
 
-              {/* Minimal Navigation */}
-              <div className="flex items-center gap-4 text-zinc-700">
+              {/* Navigation Arrows - Hidden on mobile */}
+              <div className="hidden sm:flex items-center gap-2">
                 <button
                   onClick={prevProduct}
-                  className="text-xs uppercase tracking-wider hover:text-zinc-900 transition-colors"
+                  className="w-9 h-9 border border-zinc-300 hover:border-zinc-500 flex items-center justify-center transition-colors"
                   data-cursor="PREV"
                 >
-                  Prev
+                  <svg className="w-3.5 h-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                  </svg>
                 </button>
-                <span className="text-[10px]">—</span>
                 <button
                   onClick={nextProduct}
-                  className="text-xs uppercase tracking-wider hover:text-zinc-900 transition-colors"
+                  className="w-9 h-9 border border-zinc-300 hover:border-zinc-500 flex items-center justify-center transition-colors"
                   data-cursor="NEXT"
                 >
-                  Next
+                  <svg className="w-3.5 h-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </div>
             </div>
 
-            {/* Editorial Product Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6">
-              {showcaseProducts.map((product, index) => {
-                const emotion = getProductEmotion(product);
-                return (
-                  <ProductCard
-                    key={product.id || index}
-                    product={product}
-                    emotion={emotion}
-                    index={index}
-                  />
-                );
-              })}
+            {/* Horizontal Scrolling Carousel */}
+            <div className="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8">
+              <div className="flex gap-2.5 sm:gap-3 lg:gap-4 pl-4 sm:pl-6 lg:pl-8 pr-4 sm:pr-6 lg:pr-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory touch-pan-x">
+                {showcaseProducts.map((product, index) => {
+                  const emotion = getProductEmotion(product);
+                  return (
+                    <div key={product.id || index} className="flex-shrink-0 w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] snap-start first:ml-0">
+                      <ProductCard
+                        product={product}
+                        emotion={emotion}
+                        index={index}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Shop All Button */}
+            <div className="flex justify-center mt-4 sm:mt-6">
+              <Link
+                href="/collections"
+                className="inline-flex border border-zinc-300 hover:border-zinc-900 text-zinc-900 px-6 sm:px-8 py-2.5 sm:py-3 text-[9px] uppercase tracking-[0.25em] font-light transition-all"
+                data-cursor="SHOP"
+              >
+                Shop All
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* 3. CAMPAIGN SECTION - Full Bleed Editorial */}
-        <section className="relative">
-          <div className="aspect-[21/10] bg-zinc-900 relative overflow-hidden">
-            {/* Video Background */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src="/city.mp4" type="video/mp4" />
-            </video>
+        {/* 3. CAMPAIGN SECTION - Full Screen Video */}
+        <section className="relative w-full h-screen min-h-[600px] overflow-hidden">
+          {/* Video Background */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/city.mp4" type="video/mp4" />
+          </video>
 
-            {/* Dark Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-black/40" />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-            {/* Minimalist Bottom Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-12 lg:p-16 z-10">
-              <div className="max-w-[1600px] mx-auto flex items-end justify-between">
-                {/* Left: Title and Description */}
-                <div className="max-w-md">
-                  <div className="text-[9px] tracking-[0.3em] text-zinc-700 mb-4 uppercase">
-                    Batch_Authentication
-                  </div>
-                  <h2 className="text-3xl lg:text-4xl font-light text-zinc-900 mb-4 leading-tight tracking-tight">
-                    Emotional Contraband
-                  </h2>
-                  <p className="text-xs text-zinc-700 leading-relaxed font-light tracking-wide">
-                    Limited batch production. Each garment authenticated and classified by emotional signature. London-based verification system.
-                  </p>
-                </div>
+          {/* Content Overlay - Bottom */}
+          <div className="relative h-full flex items-end justify-between p-6 sm:p-10 lg:p-12">
+            {/* Left: Text */}
+            <div className="max-w-lg">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-white mb-2 leading-tight tracking-tight">
+                Wear Your Emotions
+              </h2>
+              <p className="text-[11px] sm:text-xs text-white/70 font-light tracking-wide leading-relaxed">
+                Explore authentic emotional contraband, limited batch streetwear, and accessories from our latest collection.
+              </p>
+            </div>
 
-                {/* Right: Minimal CTA */}
-                <Link
-                  href="/about"
-                  className="hidden lg:inline-flex text-zinc-900 text-[10px] uppercase tracking-[0.2em] hover:text-zinc-700 transition-all border-b border-white/30 pb-1"
-                  data-cursor="LEARN"
-                >
-                  Learn More →
-                </Link>
-              </div>
+            {/* Right: CTAs */}
+            <div className="flex gap-3">
+              <Link
+                href="/collections"
+                className="inline-flex bg-white text-zinc-900 px-6 sm:px-8 py-2.5 sm:py-3 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] font-medium hover:bg-zinc-100 transition-all"
+                data-cursor="SHOP"
+              >
+                Shop Now
+              </Link>
+              <Link
+                href="/about"
+                className="inline-flex border border-white/50 text-white px-6 sm:px-8 py-2.5 sm:py-3 text-[9px] sm:text-[10px] uppercase tracking-[0.25em] font-light hover:bg-white/10 transition-all"
+                data-cursor="VIEW"
+              >
+                About Alívio
+              </Link>
             </div>
           </div>
         </section>
@@ -253,106 +272,98 @@ export default function Homepage({ featuredProducts, emotionsWithStats }) {
           </div>
         </section>
 
-        {/* 6. EMOTION COLLECTIONS - Elegant Grid */}
-        <section className="py-32 lg:py-40 bg-[#FAF8F5]">
-          <div className="max-w-[1800px] mx-auto px-8 lg:px-12">
-            {/* Minimal centered header */}
-            <div className="text-center mb-20">
-              <div className="text-[9px] tracking-[0.3em] text-zinc-800 mb-4 uppercase">
+        {/* 6. EMOTION COLLECTIONS - Diagonal Split */}
+        <section className="relative w-full">
+          {/* Header - Positioned Above */}
+          <div className="bg-[#FAF8F5] py-12 sm:py-16">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-zinc-600 mb-3 sm:mb-4 uppercase">
                 Core_Emotions
               </div>
-              <h2 className="text-5xl lg:text-6xl font-light text-zinc-900 tracking-tight mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-zinc-900 tracking-tight mb-4">
                 Two Emotions
               </h2>
-              <p className="text-sm text-zinc-700 max-w-md mx-auto font-light leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-700 max-w-md mx-auto font-light leading-relaxed">
                 Authentic emotional contraband. Limited production, batch verified.
               </p>
             </div>
+          </div>
 
-            {/* Two column grid with generous spacing */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-              {emotionsWithStats.slice(0, 2).map((item, index) => {
-                const emotion = item.emotion || item;
-                if (!emotion) return null;
+          {/* Diagonal Split Container - Full Width */}
+          <div className="relative w-full h-[70vh] min-h-[600px] overflow-hidden">
+              {/* Euphoria - Top Left Triangle */}
+              <Link
+                href="/collections/euphoria"
+                className="absolute inset-0 group"
+                style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }}
+                data-cursor="EUPHORIA"
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-violet-500/20">
+                  <img
+                    src="/euphoria.png"
+                    alt="Euphoria"
+                    className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
 
-                // Get first product image from this emotion's collection
-                const firstProduct = item.collection?.products?.edges?.[0]?.node;
-                const imageUrl = firstProduct?.featuredImage?.url || firstProduct?.images?.edges?.[0]?.node?.url;
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-transparent" />
 
-                return (
-                  <motion.div
-                    key={emotion.id || index}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
-                  >
-                    <Link
-                      href={`/collections/${emotion.id}`}
-                      className="group block"
-                      data-cursor="EXPLORE"
-                    >
-                      {/* Image - 1:1 aspect ratio */}
-                      <div className="aspect-square relative overflow-hidden mb-6 bg-zinc-100">
-                        {imageUrl ? (
-                          <img
-                            src={imageUrl}
-                            alt={emotion.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <div className="text-8xl font-light text-zinc-300">ALV</div>
-                          </div>
-                        )}
+                {/* Content */}
+                <div className="absolute top-8 left-8 sm:top-12 sm:left-12">
+                  <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-white/80 mb-2 sm:mb-3 uppercase font-medium">
+                    Schedule_I
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight mb-2 sm:mb-3">
+                    Euphoria
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/90 font-light tracking-wide max-w-xs">
+                    99.7% Purity
+                  </p>
+                </div>
+              </Link>
 
-                        {/* Minimal classification badge */}
-                        {emotion.contraband?.classification && (
-                          <div className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm border border-zinc-200 text-[9px] tracking-[0.3em] uppercase text-zinc-900">
-                            {emotion.contraband.classification}
-                          </div>
-                        )}
-                      </div>
+              {/* Rage - Bottom Right Triangle */}
+              <Link
+                href="/collections/rage"
+                className="absolute inset-0 group"
+                style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }}
+                data-cursor="RAGE"
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 bg-gradient-to-tl from-red-500/20 to-orange-600/20">
+                  <img
+                    src="/rage.png"
+                    alt="Rage"
+                    className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
 
-                      {/* Content below image */}
-                      <div className="space-y-4">
-                        {/* Emotion name */}
-                        <h3 className="text-3xl lg:text-4xl font-light text-zinc-900 tracking-tight group-hover:text-zinc-600 transition-colors">
-                          {emotion.name}
-                        </h3>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tl from-red-900/40 to-transparent" />
 
-                        {/* Description */}
-                        <p className="text-sm text-zinc-700 leading-relaxed font-light">
-                          {emotion.description || "Authentic emotional contraband, batch-verified and laboratory tested."}
-                        </p>
+                {/* Content */}
+                <div className="absolute bottom-8 right-8 sm:bottom-12 sm:right-12 text-right">
+                  <div className="text-[8px] sm:text-[9px] tracking-[0.35em] text-white/80 mb-2 sm:mb-3 uppercase font-medium">
+                    Schedule_I
+                  </div>
+                  <h3 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight mb-2 sm:mb-3">
+                    Rage
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/90 font-light tracking-wide">
+                    96.8% Purity
+                  </p>
+                </div>
+              </Link>
 
-                        {/* Stats grid */}
-                        <div className="grid grid-cols-3 gap-4 pt-4 border-t border-zinc-200">
-                          <div>
-                            <div className="text-[9px] tracking-[0.3em] text-zinc-700 uppercase mb-1">Items</div>
-                            <div className="text-sm font-mono text-zinc-900">{item.productCount || 0}</div>
-                          </div>
-                          <div>
-                            <div className="text-[9px] tracking-[0.3em] text-zinc-700 uppercase mb-1">Purity</div>
-                            <div className="text-sm font-mono text-zinc-900">{emotion.contraband?.purity || "99.9%"}</div>
-                          </div>
-                          <div>
-                            <div className="text-[9px] tracking-[0.3em] text-zinc-700 uppercase mb-1">Batch</div>
-                            <div className="text-sm font-mono text-zinc-900">{emotion.contraband?.batchNumber?.slice(-4) || "0001"}</div>
-                          </div>
-                        </div>
-
-                        {/* Explore link */}
-                        <div className="flex items-center gap-2 text-zinc-900 text-xs uppercase tracking-wider pt-2 group-hover:gap-3 transition-all">
-                          <span>Explore Collection</span>
-                          <span>→</span>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
+              {/* Diagonal Line Accent */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to bottom right, transparent 49.5%, rgba(255,255,255,0.3) 49.5%, rgba(255,255,255,0.3) 50.5%, transparent 50.5%)'
+                }}
+              />
           </div>
         </section>
 
