@@ -57,7 +57,7 @@ export default function Homepage({ featuredProducts, emotionsWithStats }) {
         />
 
         {/* 2. LABORATORY PRODUCT SHOWCASE - Horizontal Carousel */}
-        <section className="py-6 sm:py-8 lg:py-12 bg-[#FAF8F5]">
+        <section className="pt-6 pb-6 sm:pt-8 sm:pb-8 lg:pt-12 lg:pb-12 bg-[#FAF8F5]">
           <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header with Navigation */}
             <div className="flex items-center justify-between mb-4 sm:mb-6">

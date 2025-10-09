@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Brand info */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-white" />
+              <div className="w-8 h-8 bg-zinc-900" />
               <div className="flex flex-col">
                 <div className="font-black text-sm text-zinc-900 leading-none mb-0.5">ALIVIO</div>
                 <div className="text-[9px] text-zinc-800 tracking-[0.2em] leading-none uppercase">Emotional_Contraband</div>

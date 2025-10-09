@@ -66,8 +66,8 @@ export default function Navbar() {
           }`}>
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group" data-cursor="HOME">
-              {/* White Square Logo */}
-              <div className="w-8 h-8 bg-white group-hover:opacity-80 transition-opacity duration-300" />
+              {/* Adaptive Square Logo */}
+              <div className={`w-8 h-8 group-hover:opacity-80 transition-all duration-300 ${isTransparent ? 'bg-white' : 'bg-zinc-900'}`} />
 
               {/* Logo Text */}
               <div className="flex flex-col">

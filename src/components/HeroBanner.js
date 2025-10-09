@@ -2,15 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-export default function HeroBanner({ openDiagnostic }) {
+export default function HeroBanner({ openDiagnostic = () => {} }) {
   return (
-    <section className="relative h-[100vh] w-full overflow-hidden" style={{ minHeight: '100vh', maxHeight: '100vh' }}>
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image with dark gradient overlay */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full bg-neutral-900">
         <img
           src="/hero.png"
           alt="Alívio Hero"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-[center_20%] sm:object-[center_30%]"
+          style={{ minHeight: '100%', minWidth: '100%' }}
         />
         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-black/60 via-black/30 to-transparent pointer-events-none" />
       </div>
