@@ -5,17 +5,21 @@ export default function CustomCursor() {
   const [cursorLabel, setCursorLabel] = useState("");
   const [isVisible, setIsVisible] = useState(true);
   const [cursorState, setCursorState] = useState('default'); // default, hover, active, interactive
+  const [isOnHero, setIsOnHero] = useState(false);
 
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
   const cursorSize = useSpring(4, { stiffness: 400, damping: 28 });
   const cursorOpacity = useSpring(1, { stiffness: 300, damping: 30 });
 
-  // Enhanced cursor states
+  // Enhanced cursor states with hero-specific colors
+  const getCursorColor = (baseColor) => isOnHero ? '#ffffff' : baseColor;
+  const getBorderColor = () => isOnHero ? 'rgba(255, 255, 255, 0.6)' : 'rgba(24, 24, 27, 0.6)';
+
   const cursorStates = {
-    default: { size: 4, color: '#18181b', border: false },
+    default: { size: 4, color: getCursorColor('#18181b'), border: false },
     hover: { size: 24, color: 'transparent', border: true },
-    active: { size: 20, color: '#18181b', border: true },
+    active: { size: 20, color: getCursorColor('#18181b'), border: true },
     interactive: { size: 32, color: 'transparent', border: true }
   };
 
@@ -53,6 +57,12 @@ export default function CustomCursor() {
     cursorY.set(e.clientY);
 
     const target = e.target;
+
+    // Check if cursor is over hero section
+    const heroSection = target.closest('section');
+    const isOverHero = heroSection?.querySelector('img[alt*="Hero"]') !== null;
+    setIsOnHero(isOverHero);
+
     const cursorData = target.closest('[data-cursor]')?.getAttribute('data-cursor');
     const isButton = target.closest('button, [role="button"]');
     const isLink = target.closest('a');
@@ -152,7 +162,7 @@ export default function CustomCursor() {
             width: cursorSize,
             height: cursorSize,
             backgroundColor: currentState.color,
-            border: currentState.border ? '1px solid rgba(24, 24, 27, 0.6)' : 'none',
+            border: currentState.border ? `1px solid ${getBorderColor()}` : 'none',
           }}
           animate={{
             scale: cursorState === 'default' ? 1 : 1,
@@ -163,10 +173,11 @@ export default function CustomCursor() {
         {/* Outer ring for interactive states */}
         {cursorState !== 'default' && (
           <motion.div
-            className="absolute inset-0 rounded-full border border-zinc-900/30"
+            className="absolute inset-0 rounded-full"
             style={{
               width: cursorSize,
               height: cursorSize,
+              border: `1px solid ${isOnHero ? 'rgba(255, 255, 255, 0.3)' : 'rgba(24, 24, 27, 0.3)'}`,
             }}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -178,10 +189,11 @@ export default function CustomCursor() {
         {/* Pulse effect for interactive elements */}
         {cursorState === 'interactive' && (
           <motion.div
-            className="absolute inset-0 rounded-full border border-zinc-900/20"
+            className="absolute inset-0 rounded-full"
             style={{
               width: cursorSize,
               height: cursorSize,
+              border: `1px solid ${isOnHero ? 'rgba(255, 255, 255, 0.2)' : 'rgba(24, 24, 27, 0.2)'}`,
             }}
             animate={{
               scale: [1, 1.4, 1],
@@ -212,7 +224,14 @@ export default function CustomCursor() {
             exit={{ opacity: 0, scale: 0.8, y: "calc(-50% + 20px)" }}
             transition={{ duration: 0.15, ease: "easeOut" }}
           >
-            <div className="bg-zinc-900/90 backdrop-blur-sm text-white text-[10px] font-mono px-2 py-1 border border-zinc-900 whitespace-nowrap tracking-wider">
+            <div
+              className="backdrop-blur-sm text-[10px] font-mono px-2 py-1 whitespace-nowrap tracking-wider"
+              style={{
+                backgroundColor: isOnHero ? 'rgba(255, 255, 255, 0.9)' : 'rgba(24, 24, 27, 0.9)',
+                color: isOnHero ? '#18181b' : '#ffffff',
+                border: `1px solid ${isOnHero ? 'rgba(255, 255, 255, 0.6)' : 'rgba(24, 24, 27, 0.6)'}`,
+              }}
+            >
               {cursorLabel}
             </div>
           </motion.div>
